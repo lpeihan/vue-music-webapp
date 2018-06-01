@@ -1,20 +1,24 @@
 <template>
   <transition name="slide">
-    <scroll class="music-list" :data="songs" :bounce-top="false">
-      <div>
-        <div class="header" ref="header">
-          <div class="navbar">
-            <div class="back" @click="$router.go(-1)"><icon name="back"></icon></div>
-          </div>
-
-          <div class="bg" :style="{ backgroundImage: `url(${musicList.picUrl || imgUrl})` }"></div>
+    <div class="music-list">
+      <div class="navbar">
+        <div class="back" @click="$router.go(-1)">
+          <icon name="back"></icon>
         </div>
-        <song-list :songs="songs" @select="selectsong"></song-list>
       </div>
-      <div class="loading-wrapper">
-        <loading v-show="!songs.length"></loading>
-      </div>
-    </scroll>
+      <scroll :data="songs" :bounce-top="false">
+        <div>
+          <div class="bg"
+            :style="{ backgroundImage: `url(${musicList.picUrl || imgUrl})` }"></div>
+
+          <song-list :songs="songs" @select="selectsong"></song-list>
+        </div>
+
+        <div class="loading-wrapper">
+          <loading v-show="!songs.length"></loading>
+        </div>
+      </scroll>
+    </div>
   </transition>
 </template>
 
@@ -48,11 +52,12 @@ export default {
       try {
         const res = await getMusicListDetail(id);
 
+        this.imgUrl = res.data.playlist.coverImgUrl;
+
         if (res.status === 200) {
           this.songs = res.data.playlist.tracks.map((song) => {
             return createSong(song);
           });
-          this.imgUrl = res.data.playlist.coverImgUrl;
         }
       } catch (err) {
 
@@ -77,11 +82,6 @@ export default {
     background: $color-background
     z-index: 10
 
-    .loading-wrapper
-      absolute: top 50% left 50%
-      transform: translate3d(-50%, -50%, 0)
-      z-index: 10000
-
     &.slide
       &-enter-active
       &-leave-active
@@ -90,26 +90,29 @@ export default {
       &-leave-to
         transform: translateX(100%)
 
-    .header
+    .navbar
+      fixed: top 0 left 0 right 0
+      height: 50px
+      z-index: 1
+      color: $white
+      .back
+        absolute: top 5px left 10px
+        padding: 10px
+        .icon
+          font-size: 28px
+
+    .bg
       position: relative
+      size: 100% 0
+      padding-bottom: 70%
+      background-size: cover
+      &::before
+        content: ''
+        absolute: top 0 left 0 right 0 bottom 0
+        background: $color-overlay
 
-      .bg
-        position: relative
-        size: 100% 0
-        padding-bottom: 70%
-        background-size: cover
-        &::before
-          content: ''
-          absolute: top 0 left 0 right 0 bottom 0
-          background: rgba(7, 17, 27, 0.3)
+    .loading-wrapper
+      absolute: top 50% left 50%
+      transform: translate3d(-50%, -50%, 0)
 
-      .navbar
-        fixed: top 0 left 0 right 0
-        height: 50px
-        z-index: 1
-        color: $white
-        .back
-          absolute: top 13px left 20px
-          .icon
-            font-size: 28px
 </style>

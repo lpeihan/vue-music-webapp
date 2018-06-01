@@ -166,7 +166,7 @@ export default {
         &::after
           content: ''
           absolute: top -100px left -100px right -100px bottom -100px
-          background: rgba(7, 17, 27, .4)
+          background: $color-overlay
 
       .top
         position: relative
