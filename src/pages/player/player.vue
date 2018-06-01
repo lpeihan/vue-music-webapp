@@ -4,7 +4,7 @@
       <div class="player-normal" v-show="fullScreen">
         <div class="overlay" :style="{ 'background-image': `url(${currentSong.image})` }"></div>
         <div class="top">
-          <div class="back" @click="back">
+          <div class="back" @click="changeFullScreen(false)">
             <icon name="down"></icon>
           </div>
           <p class="name">{{currentSong.name}}</p>
@@ -12,8 +12,12 @@
         </div>
 
         <div class="middle">
-          <div class="cd-wrapper">
-            <div class="cd" :style="{ 'background-image': `url(${currentSong.image})` }"></div>
+          <div class="cd-wrapper" ref="cdWrapper">
+            <div
+              class="cd"
+              :style="{ 'background-image': `url(${currentSong.image})` }"
+              :class="cdCls"
+            ></div>
           </div>
         </div>
 
@@ -39,7 +43,7 @@
       </div>
     </transition>
 
-    <div class="player-mini" v-show="!fullScreen" @click="open">
+    <div class="player-mini" @click="changeFullScreen(true)">
       <div class="img" :style="{ 'background-image': `url(${currentSong.image})` }"></div>
 
       <div class="text">
@@ -57,7 +61,11 @@
       </div>
     </div>
 
-    <audio ref="audio" :src="url" autoplay="autoplay"></audio>
+    <audio
+      ref="audio" :src="url" autoplay="autoplay"
+      @timeupdate="updateTime"
+      @ended="end"
+    ></audio>
   </div>
 </template>
 
@@ -68,11 +76,15 @@ import { getSong } from '../../api/song';
 export default {
   data() {
     return {
-      url: ''
+      url: '',
+      currentTime: 0
     };
   },
   computed: {
-    ...mapGetters(['fullScreen', 'currentSong', 'playList', 'playing', 'currentIndex'])
+    ...mapGetters(['fullScreen', 'currentSong', 'playList', 'playing', 'currentIndex']),
+    cdCls() {
+      return this.playing ? 'play' : 'play pause';
+    }
   },
   methods: {
     ...mapMutations({
@@ -101,11 +113,24 @@ export default {
 
       this.setCurrentIndex(index);
     },
-    back() {
-      this.setFullScreen(false);
+    changeFullScreen(flag) {
+      this.setFullScreen(flag);
     },
-    open() {
-      this.setFullScreen(true);
+    updateTime(e) {
+      this.currentTime = e.target.currentTime;
+    },
+    end() {
+      this.next();
+    },
+    getPosAndScale() {
+      const width = innerWidth * 0.75;
+      const scale = 40 / width;
+
+      return {
+        x: -(innerWidth / 2 - 40),
+        y: innerHeight - 150 - width / 2 - 30,
+        scale
+      };
     }
   },
   watch: {
@@ -126,8 +151,8 @@ export default {
         playing ? audio.play() : audio.pause();
       });
     }
-  }
-
+  },
+  mounted() {}
 };
 </script>
 
@@ -149,7 +174,6 @@ export default {
           .top
           .bottom
             transition: all 0.4s cubic-bezier(0.86, 0.18, 0.82, 1.32)
-
         &-enter
         &-leave-to
           opacity: 0
@@ -199,6 +223,16 @@ export default {
             absolute: top 0 left 0 right 0 bottom 0
             background-size: 100% 100%
             border-radius: 50%
+            &.play
+              animation: rotate 20s linear infinite
+            &.pause
+              animation-play-state: paused
+
+          @keyframes rotate
+            0%
+              transform: rotate(0)
+            100%
+              transform: rotate(360deg)
 
       .bottom
         absolute: bottom 44px left 0 right 0
@@ -248,6 +282,6 @@ export default {
 
         .mini-play
           .icon
-            font-size: 32px
+            font-size: 36px
 
 </style>

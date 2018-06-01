@@ -10,8 +10,8 @@ class Song {
 export function createSong(song) {
   return new Song({
     id: song.id,
-    name: song.name,
-    singer: song.ar[0].name,
+    name: `${song.name}`,
+    singer: `${song.ar[0].name} - ${song.al.name}`,
     image: song.al.picUrl
   });
 }

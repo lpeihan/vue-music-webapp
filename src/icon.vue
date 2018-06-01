@@ -30,7 +30,8 @@ export default {
         random: require('./assets/icons/random.svg'),
         pause: require('./assets/icons/pause.svg'),
         minipause: require('./assets/icons/mini-pause.svg'),
-        miniplay: require('./assets/icons/mini-play.svg')
+        miniplay: require('./assets/icons/mini-play.svg'),
+        headphones: require('./assets/icons/headphones.svg')
       }
     };
   }

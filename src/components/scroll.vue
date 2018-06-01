@@ -24,6 +24,10 @@ export default {
     loaded: {
       type: Boolean,
       default: true
+    },
+    listenScroll: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -40,6 +44,13 @@ export default {
           top: this.bounceTop
         }
       });
+
+      if (this.listenScroll) {
+        const that = this;
+        this.scroll.on('scroll', (pos) => {
+          that.$emit('scroll', pos);
+        });
+      }
     },
     refresh() {
       this.scroll && this.scroll.refresh();

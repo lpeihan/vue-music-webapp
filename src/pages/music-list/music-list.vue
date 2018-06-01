@@ -6,12 +6,23 @@
           <icon name="back"></icon>
         </div>
       </div>
-      <scroll :data="songs" :bounce-top="false">
+      <scroll
+        :data="songs"
+        :bounce-top="false"
+        :listen-scroll="true"
+        :probe-type="3"
+        @scroll="scroll"
+      >
         <div>
           <div class="bg"
-            :style="{ backgroundImage: `url(${musicList.picUrl || imgUrl})` }"></div>
+            :style="{ backgroundImage: `url(${musicList.picUrl})` }">
+            <div class="text" v-show="show">
+              <h1 class="name">{{musicList.name}}</h1>
+              <p class="play-count"><icon name="headphones"></icon>{{count}}万</p>
+            </div>
+          </div>
 
-          <song-list :songs="songs" @select="selectsong"></song-list>
+          <song-list :songs="songs" @select="selectSong"></song-list>
         </div>
 
         <div class="loading-wrapper">
@@ -40,11 +51,14 @@ export default {
   data() {
     return {
       songs: [],
-      imgUrl: ''
+      show: true
     };
   },
   computed: {
-    ...mapGetters(['musicList'])
+    ...mapGetters(['musicList']),
+    count() {
+      return Math.round(this.musicList.playCount / 10000);
+    }
   },
   methods: {
     ...mapActions(['selectPlay']),
@@ -52,21 +66,27 @@ export default {
       try {
         const res = await getMusicListDetail(id);
 
-        this.imgUrl = res.data.playlist.coverImgUrl;
-
         if (res.status === 200) {
           this.songs = res.data.playlist.tracks.map((song) => {
             return createSong(song);
           });
         }
       } catch (err) {
-
+        console.log(err);
       }
     },
-    selectsong(song, index) {
+    selectSong(song, index) {
       this.selectPlay({ list: this.songs, index });
+    },
+    scroll(pos) {
+      if (Math.abs(pos.y) > innerWidth * 0.75 - 50) {
+        this.show = false;
+      } else {
+        this.show = true;
+      }
     }
   },
+  mounted() {},
   created() {
     this.getMusicListDetail(this.musicList.id || this.$route.params.id);
   }
@@ -105,11 +125,25 @@ export default {
       position: relative
       size: 100% 0
       padding-bottom: 70%
+      height: 0
       background-size: cover
       &::before
         content: ''
         absolute: top 0 left 0 right 0 bottom 0
         background: $color-overlay
+      .text
+        absolute: bottom 20px left 20px right 20px
+        color: $white
+        .name
+          font-size: 17px
+
+        .play-count
+          margin-top: 10px
+          font-size: $font-size-small
+          .icon
+            font-size: 14px
+            relative: top 2px
+            margin-right: 2px
 
     .loading-wrapper
       absolute: top 50% left 50%
