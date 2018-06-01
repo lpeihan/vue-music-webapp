@@ -1,0 +1,54 @@
+<template>
+  <div class="song-list">
+    <div class="song" v-for="(song, index) in songs" :key="index" @click="select(song, index)">
+      <div class="number">{{index + 1}}</div>
+      <p class="name">{{song.name}}</p>
+      <p class="singer">{{song.singer}}</p>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    songs: {
+      type: Array,
+      default: () => []
+    }
+  },
+  methods: {
+    select(song, index) {
+      this.$emit('select', song, index);
+    },
+    filterName() {},
+    filterSinger() {}
+  }
+};
+</script>
+
+<style lang="stylus" scoped>
+  @import "../../styles/variables"
+  @import "../../styles/mixins"
+
+  .song-list
+    position: relative
+    .song
+      padding: 16px 0
+      border-1px($color-border)
+      margin-left: 56px
+      position: relative
+
+      .number
+        absolute: top 27px left -34px
+        color: $color-text-l
+
+      .name
+        color: $color-text
+        no-wrap()
+
+      .singer
+        margin-top: 8px
+        color: $color-text-l
+        font-size: $font-size-small
+        no-wrap()
+</style>
