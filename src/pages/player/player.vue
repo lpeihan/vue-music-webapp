@@ -1,10 +1,14 @@
 <template>
   <div class="player" v-if="playList.length">
-    <transition name="normal">
+    <transition
+      name="normal"
+      @enter="enter"
+      @leave="leave"
+    >
       <div class="player-normal" v-show="fullScreen">
         <div class="overlay" :style="{ 'background-image': `url(${currentSong.image})` }"></div>
         <div class="top">
-          <div class="back" @click="changeFullScreen(false)">
+          <div class="back" @click="close(false)">
             <icon name="down"></icon>
           </div>
           <p class="name">{{currentSong.name}}</p>
@@ -12,7 +16,7 @@
         </div>
 
         <div class="middle">
-          <div class="cd-wrapper" ref="cdWrapper">
+          <div class="cd-wrapper" ref="cd">
             <div
               class="cd"
               :style="{ 'background-image': `url(${currentSong.image})` }"
@@ -43,7 +47,7 @@
       </div>
     </transition>
 
-    <div class="player-mini" @click="changeFullScreen(true)">
+    <div class="player-mini" @click="open(true)">
       <div class="img" :style="{ 'background-image': `url(${currentSong.image})` }"></div>
 
       <div class="text">
@@ -64,12 +68,13 @@
     <audio
       ref="audio" :src="url" autoplay="autoplay"
       @timeupdate="updateTime"
-      @ended="end"
+      @ended="next"
     ></audio>
   </div>
 </template>
 
 <script>
+import animations from 'create-keyframe-animation';
 import { mapGetters, mapMutations } from 'vuex';
 import { getSong } from '../../api/song';
 
@@ -113,17 +118,59 @@ export default {
 
       this.setCurrentIndex(index);
     },
-    changeFullScreen(flag) {
-      this.setFullScreen(flag);
+    close() {
+      this.setFullScreen(false);
+    },
+    open() {
+      this.setFullScreen(true);
     },
     updateTime(e) {
       this.currentTime = e.target.currentTime;
     },
-    end() {
-      this.next();
+    enter(el, done) {
+      const { x, y, scale } = this.getPosAndScale();
+      const animation = {
+        0: {
+          transform: `translate3d(${x}px,${y}px,0) scale(${scale})`
+        },
+        60: {
+          transform: `translate3d(0,0,0) scale(1.1)`
+        },
+        100: {
+          transform: `translate3d(0,0,0) scale(1)`
+        }
+      };
+
+      animations.registerAnimation({
+        name: 'move',
+        animation,
+        presets: {
+          duration: 400,
+          easing: 'linear'
+        }
+      });
+
+      animations.runAnimation(this.$refs.cd, 'move', () => {
+        animations.unregisterAnimation('move');
+        this.$refs.cd.style.animation = '';
+        done();
+      });
+    },
+    leave(el, done) {
+      const { x, y, scale } = this.getPosAndScale();
+      const cd = this.$refs.cd;
+
+      cd.style.transition = 'all 0.4s';
+      cd.style['transform'] = `translate3d(${x}px,${y}px,0) scale(${scale})`;
+
+      cd.addEventListener('transitionend', () => {
+        cd.style.transition = '';
+        cd.style['transform'] = '';
+        done();
+      });
     },
     getPosAndScale() {
-      const width = innerWidth * 0.75;
+      const width = innerWidth * 0.65;
       const scale = 40 / width;
 
       return {
@@ -213,8 +260,8 @@ export default {
         justify-content: center
 
         .cd-wrapper
-          size: 75% 0
-          padding-bottom: 75%
+          size: 65% 0
+          padding-bottom: 65%
           border: 10px solid rgba(255, 255, 255, 0.2)
           border-radius: 50%
           position: relative
