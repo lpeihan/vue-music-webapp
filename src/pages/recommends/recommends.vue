@@ -1,6 +1,6 @@
 <template>
   <div class="recommends">
-    <scroll class="recommends-scroll" :data="recommends" :bounce-top="false">
+    <scroll class="recommends-scroll" :loaded="loaded" :bounce-top="false">
       <div>
         <div class="barnners-wrapper" v-if="barnners.length">
           <swiper :interval="4000" class="barnners">
@@ -12,9 +12,9 @@
             </div>
           </swiper>
         </div>
-        <entry></entry>
+        <entry v-show="loaded"></entry>
 
-        <div class="recommend-list">
+        <div class="recommend-list" v-show="loaded">
           <h1 class="title">
             <span>推荐歌单</span>
           </h1>
@@ -34,6 +34,9 @@
           </div>
         </div>
       </div>
+      <div class="loading-wrapper" v-show="!loaded">
+        <loading></loading>
+      </div>
     </scroll>
   </div>
 </template>
@@ -42,6 +45,7 @@
 import Swiper from '../../components/swiper';
 import Entry from '../entry/entry';
 import Scroll from '../../components/scroll';
+import Loading from '../../components/loading';
 
 import { getBanners, getRecommends } from '../../api/recommends';
 import { mapMutations } from 'vuex';
@@ -50,12 +54,14 @@ export default {
   components: {
     Swiper,
     Entry,
-    Scroll
+    Scroll,
+    Loading
   },
   data() {
     return {
       barnners: [],
-      recommends: []
+      recommends: [],
+      loaded: false
     };
   },
   methods: {
@@ -70,7 +76,7 @@ export default {
           this.barnners = res.data.banners;
         }
       } catch (err) {
-
+        console.log(err);
       }
     },
     async getRecommends() {
@@ -81,7 +87,7 @@ export default {
           this.recommends = res.data.result;
         }
       } catch (err) {
-
+        console.log(err);
       }
     },
     selectRecommend(recommend) {
@@ -90,9 +96,11 @@ export default {
       this.setMusicList(recommend);
     }
   },
-  created() {
-    this.getBanners();
-    this.getRecommends();
+  async created() {
+    await this.getBanners();
+    await this.getRecommends();
+
+    this.loaded = true;
   }
 };
 </script>
@@ -103,6 +111,7 @@ export default {
 
   .recommends
     height: 100%
+    position: relative
 
     .barnners-wrapper
       position: relative
@@ -148,5 +157,9 @@ export default {
           line-height: 18px
           white-space: normal
           font-size: $font-size-small
+
+    .loading-wrapper
+      absolute: top 50% left 50%
+      transform: translate3d(-50%, -50%, 0)
 
 </style>

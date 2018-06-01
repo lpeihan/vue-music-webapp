@@ -11,6 +11,9 @@
         </div>
         <song-list :songs="songs" @select="selectsong"></song-list>
       </div>
+      <div class="loading-wrapper">
+        <loading v-show="!songs.length"></loading>
+      </div>
     </scroll>
   </transition>
 </template>
@@ -21,11 +24,13 @@ import { getMusicListDetail } from '../../api/recommends';
 import SongList from './song-list';
 import Scroll from '../../components/scroll';
 import { createSong } from '../../services/song';
+import Loading from '../../components/loading';
 
 export default {
   components: {
     SongList,
-    Scroll
+    Scroll,
+    Loading
 
   },
   data() {
@@ -71,6 +76,11 @@ export default {
     fixed: top 0 left 0 right 0 bottom 0
     background: $color-background
     z-index: 10
+
+    .loading-wrapper
+      absolute: top 50% left 50%
+      transform: translate3d(-50%, -50%, 0)
+      z-index: 10000
 
     &.slide
       &-enter-active

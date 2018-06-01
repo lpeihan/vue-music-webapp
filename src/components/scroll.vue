@@ -20,6 +20,10 @@ export default {
     bounceTop: {
       type: Boolean,
       default: true
+    },
+    loaded: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -43,6 +47,11 @@ export default {
   },
   watch: {
     data() {
+      setTimeout(() => {
+        this.refresh();
+      }, 20);
+    },
+    loaded() {
       setTimeout(() => {
         this.refresh();
       }, 20);
