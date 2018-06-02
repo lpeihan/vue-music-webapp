@@ -12,25 +12,49 @@ export const playlistMixin = {
     ])
   },
   methods: {
-    appendBottm(el) {
-      const bottom = document.createElement('div');
-      bottom.style.height = '60px';
-      bottom.setAttribute(PLAYLIST, PLAYLIST);
+    appendBottm(playlist) {
+      const el = this.$refs.scroll.$el.children[0];
 
-      if (el.lastChild.getAttribute(PLAYLIST) !== PLAYLIST) {
+      if (playlist.length && el.lastChild.getAttribute(PLAYLIST) !== PLAYLIST) {
+        const bottom = document.createElement('div');
+        bottom.style.height = '60px';
+        bottom.setAttribute(PLAYLIST, PLAYLIST);
+
         el.appendChild(bottom);
+        this.$refs.scroll.refresh();
       }
-    },
-    handlePlaylist() {
-      throw new Error('component must implement handlePlaylist method');
     }
   },
   watch: {
     playlist(val) {
-      this.handlePlaylist(val);
+      this.appendBottm(val);
     }
   },
   mounted() {
-    this.handlePlaylist(this.playlist);
+    this.appendBottm(this.playlist);
+  }
+};
+
+export const showMixin = {
+  data() {
+    return {
+      show: false
+    };
+  },
+  methods: {
+    open(name = 'default') {
+      this.show = true;
+      const hash = location.hash ? `&${name}` : `#${name}`;
+      history.pushState({ page: name }, name, `${location.href}${hash}`);
+    },
+    back() {
+      history.go(-1);
+    },
+    close() {
+      this.show = false;
+    }
+  },
+  created() {
+    addEventListener('popstate', this.close);
   }
 };

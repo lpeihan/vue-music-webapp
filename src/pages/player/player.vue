@@ -53,7 +53,7 @@
             <div class="next" @click="next">
               <icon name="next"></icon>
             </div>
-            <div class="playlist">
+            <div class="playlist" @click="openPlaylist">
               <icon name="playlist"></icon>
             </div>
           </div>
@@ -73,17 +73,17 @@
         <div class="mini-play" @click.stop="togglePlaying">
           <icon :name="playing ? 'minipause': 'miniplay'"></icon>
         </div>
-        <div class="playlist">
+        <div class="playlist" @click.stop="openPlaylist">
           <icon name="playlist"></icon>
         </div>
       </div>
     </div>
-
+    <playlist ref="playlist"></playlist>
     <audio
       ref="audio" :src="url" autoplay="autoplay"
       @timeupdate="updateTime"
-      @ended="ended"
-    ></audio>
+      @ended="ended">
+    </audio>
   </div>
 </template>
 
@@ -96,11 +96,13 @@ import { leftpad, shuffle } from '../../utils';
 import LyricParser from 'lyric-parser';
 import Scroll from '../../components/scroll';
 import { mode } from '../../services/config';
+import Playlist from '../playlist/playlist';
 
 export default {
   components: {
     ProgressBar,
-    Scroll
+    Scroll,
+    Playlist
   },
   data() {
     return {
@@ -202,11 +204,13 @@ export default {
       }
     },
     close() {
-      this.showLyric = false;
+      if (!location.hash) {
+        this.showLyric = false;
 
-      this.$nextTick(() => {
-        this.setFullScreen(false);
-      });
+        this.$nextTick(() => {
+          this.setFullScreen(false);
+        });
+      }
     },
     back() {
       history.go(-1);
@@ -240,6 +244,9 @@ export default {
 
       this.setCurrentIndex(index);
       this.setPlaylist(list);
+    },
+    openPlaylist() {
+      this.$refs.playlist.open();
     },
     enter(el, done) {
       const { x, y, scale } = this.getPosAndScale();
@@ -319,16 +326,16 @@ export default {
         this.duration = this.$refs.audio.duration;
       }, 300);
     },
-    playing(playing) {
+    playing(val) {
       if (!this.url) { return; }
 
       this.$nextTick(() => {
-        playing ? this.$refs.audio.play() : this.$refs.audio.pause();
+        val ? this.$refs.audio.play() : this.$refs.audio.pause();
       });
     },
-    fullScreen(fullScreen) {
-      if (fullScreen) {
-        history.pushState({ page: 'full-screen' }, 'full-screen', `${window.location.href}#`);
+    fullScreen(val) {
+      if (val) {
+        history.pushState({ page: 'full-screen' }, 'full-screen', `${location.href}#full-screen`);
       }
     }
   },
