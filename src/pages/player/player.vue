@@ -1,10 +1,6 @@
 <template>
   <div class="player" v-if="playList.length">
-    <transition
-      name="normal"
-      @enter="enter"
-      @leave="leave"
-    >
+    <transition name="normal" @enter="enter" @leave="leave">
       <div class="player-normal" v-show="fullScreen">
         <div class="overlay" :style="{ 'background-image': `url(${currentSong.image})` }"></div>
         <div class="top">
@@ -15,14 +11,25 @@
           <p class="singer">{{currentSong.singer}}</p>
         </div>
 
-        <div class="middle">
-          <div class="cd-wrapper" ref="cd">
+        <div class="middle" @click="showLyric = !showLyric">
+          <div class="cd-wrapper" ref="cd" v-show="!showLyric">
             <div
               class="cd"
               :style="{ 'background-image': `url(${currentSong.image})` }"
               :class="cdCls"
-            ></div>
+            >
+            </div>
           </div>
+          <scroll class="lyric-wrapper" v-show="showLyric" ref="lyricWrapper">
+            <div>
+              <p
+                v-for="(line, index) in lyric.lines" :key="index"  class="line" ref="line"
+                :class="{ 'active': index === currentLineNum }"
+              >
+                {{line.txt}}
+              </p>
+            </div>
+          </scroll>
         </div>
 
         <div class="bottom">
@@ -87,17 +94,22 @@ import { getSong, getLyric } from '../../api/song';
 import ProgressBar from '../../components/progress-bar';
 import { leftpad } from '../../utils';
 import LyricParser from 'lyric-parser';
+import Scroll from '../../components/scroll';
 
 export default {
   components: {
-    ProgressBar
+    ProgressBar,
+    Scroll
   },
   data() {
     return {
       url: '',
       duration: 0,
       currentTime: 0,
-      lyric: ''
+      lyric: '',
+      showLyric: false,
+      currentLineNum: 0,
+      playingLyric: ''
     };
   },
   computed: {
@@ -139,10 +151,20 @@ export default {
       }
     },
     handleLyric({lineNum, txt}) {
-      console.log(lineNum, txt);
+      this.currentLineNum = lineNum;
+
+      if (lineNum > 5) {
+        const line = this.$refs.line[lineNum - 5];
+        this.$refs.lyricWrapper.scrollToElement(line, 1000);
+      } else {
+        this.$refs.lyricWrapper.scrollTo(0, 0, 1000);
+      }
+
+      this.playingLyric = txt;
     },
     togglePlaying() {
       this.setPlaying(!this.playing);
+      this.lyric && this.lyric.togglePlay();
     },
     prev() {
       const index = this.currentIndex - 1;
@@ -155,7 +177,11 @@ export default {
       this.setCurrentIndex(index);
     },
     close() {
-      this.setFullScreen(false);
+      this.showLyric = false;
+
+      this.$nextTick(() => {
+        this.setFullScreen(false);
+      });
     },
     open() {
       this.setFullScreen(true);
@@ -165,7 +191,10 @@ export default {
     },
     updateProgress(percent) {
       this.$refs.audio.currentTime = percent * this.duration;
+
       !this.playing && this.togglePlaying();
+
+      this.lyric && this.lyric.seek(this.$refs.audio.currentTime * 1000);
     },
     enter(el, done) {
       const { x, y, scale } = this.getPosAndScale();
@@ -210,13 +239,12 @@ export default {
       });
     },
     getPosAndScale() {
-      const width = innerWidth * 0.65;
-      const scale = 40 / width;
+      const width = innerWidth * 0.7;
 
       return {
         x: -(innerWidth / 2 - 40),
         y: innerHeight - 150 - width / 2 - 30,
-        scale
+        scale: 40 / width
       };
     }
   },
@@ -225,6 +253,7 @@ export default {
       this.currentTime = 0;
       this.duration = 0;
       this.url = '';
+      this.currentLineNum = 0;
       this.lyric && this.lyric.stop();
 
       await Promise.all([
@@ -237,21 +266,19 @@ export default {
       const timer = setInterval(() => {
         if (this.duration) {
           clearInterval(timer);
+          return;
         }
         this.duration = this.$refs.audio.duration;
       }, 300);
     },
     playing(playing) {
-      const audio = this.$refs.audio;
-
       if (!this.url) { return; }
 
       this.$nextTick(() => {
-        playing ? audio.play() : audio.pause();
+        playing ? this.$refs.audio.play() : this.$refs.audio.pause();
       });
     }
-  },
-  mounted() {}
+  }
 };
 </script>
 
@@ -315,9 +342,9 @@ export default {
         justify-content: center
 
         .cd-wrapper
-          size: 65% 0
-          padding-bottom: 65%
-          border: 10px solid rgba(255, 255, 255, 0.2)
+          size: 70% 0
+          padding-bottom: 70%
+          border: 8px solid rgba(255, 255, 255, 0.2)
           border-radius: 50%
           position: relative
           overflow: hidden
@@ -335,6 +362,17 @@ export default {
               transform: rotate(0)
             100%
               transform: rotate(360deg)
+
+        .lyric-wrapper
+          height: 100%
+          text-align: center
+          color: $color-text-g
+          overflow: hidden
+
+          .line
+            line-height: 36px
+            &.active
+              color: $white
 
       .bottom
         absolute: bottom 44px left 0 right 0
