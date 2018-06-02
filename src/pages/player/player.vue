@@ -26,6 +26,13 @@
         </div>
 
         <div class="bottom">
+          <div class="progress-wrapper">
+            <div class="current-time">{{currentTime | time}}</div>
+            <div class="progress-bar-wrapper">
+              <progress-bar :percent="percent" @update="updateProgress"></progress-bar>
+            </div>
+            <div class="duration">{{duration | time}}</div>
+          </div>
           <div class="btns">
             <div class="mode">
               <icon name="random"></icon>
@@ -77,11 +84,17 @@
 import animations from 'create-keyframe-animation';
 import { mapGetters, mapMutations } from 'vuex';
 import { getSong } from '../../api/song';
+import ProgressBar from '../../components/progress-bar';
+import { leftpad } from '../../utils';
 
 export default {
+  components: {
+    ProgressBar
+  },
   data() {
     return {
       url: '',
+      duration: 0,
       currentTime: 0
     };
   },
@@ -89,6 +102,15 @@ export default {
     ...mapGetters(['fullScreen', 'currentSong', 'playList', 'playing', 'currentIndex']),
     cdCls() {
       return this.playing ? 'play' : 'play pause';
+    },
+    percent() {
+      return this.currentTime / this.duration;
+    }
+  },
+  filters: {
+    time(time) {
+      time = time | 0;
+      return `${time / 60 | 0}:${leftpad(time % 60, 2, 0)}`; // minite:second
     }
   },
   methods: {
@@ -99,10 +121,9 @@ export default {
     }),
     async getSong(id) {
       try {
-        const res = await getSong(id);
-        this.url = res.data.data[0].url;
+        this.url = (await getSong(id)).data.data[0].url;
       } catch (err) {
-
+        console.log(err);
       }
     },
     togglePlaying() {
@@ -126,6 +147,9 @@ export default {
     },
     updateTime(e) {
       this.currentTime = e.target.currentTime;
+    },
+    updateProgress(percent) {
+      this.$refs.audio.currentTime = percent * this.duration;
     },
     enter(el, done) {
       const { x, y, scale } = this.getPosAndScale();
@@ -182,12 +206,19 @@ export default {
   },
   watch: {
     async currentSong(song) {
-      try {
-        await this.getSong(song.id);
-        this.setPlaying(true);
-      } catch (err) {
-        console.log(err);
-      }
+      this.currentTime = 0;
+      this.duration = 0;
+
+      await this.getSong(song.id);
+
+      this.setPlaying(true);
+
+      const timer = setInterval(() => {
+        if (this.duration) {
+          clearInterval(timer);
+        }
+        this.duration = this.$refs.audio.duration;
+      }, 300);
     },
     playing(playing) {
       const audio = this.$refs.audio;
@@ -283,14 +314,27 @@ export default {
 
       .bottom
         absolute: bottom 44px left 0 right 0
+
+        .progress-wrapper
+          padding: 0 10%
+          height: 70px
+          display: flex
+          align-items: center
+          .progress-bar-wrapper
+            flex: 1
+            margin: 0 10px
+          .current-time, .duration
+            font-size: $font-size-small + 1
+            color: $color-text-ll
+
         .btns
           display: flex
           padding: 0 8%
-          justify-content: space-around
+          justify-content: space-between
           align-items: center
           .play
             .icon
-              font-size: 36px
+              font-size: 40px
 
     &-mini
       fixed: bottom 0 left 0 right 0

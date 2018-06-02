@@ -31,7 +31,8 @@ export default {
         pause: require('./assets/icons/pause.svg'),
         minipause: require('./assets/icons/mini-pause.svg'),
         miniplay: require('./assets/icons/mini-play.svg'),
-        headphones: require('./assets/icons/headphones.svg')
+        headphones: require('./assets/icons/headphones.svg'),
+        more: require('./assets/icons/more.svg')
       }
     };
   }

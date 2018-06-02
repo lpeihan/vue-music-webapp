@@ -1,7 +1,7 @@
 <template>
   <transition name="slide">
     <div class="music-list">
-      <div class="navbar">
+      <div class="navbar" :style="{ 'background-color': `rgba(212, 68, 57, ${percent})` }">
         <div class="back" @click="$router.go(-1)">
           <icon name="back"></icon>
         </div>
@@ -51,7 +51,8 @@ export default {
   data() {
     return {
       songs: [],
-      show: true
+      show: true,
+      percent: 0
     };
   },
   computed: {
@@ -79,11 +80,7 @@ export default {
       this.selectPlay({ list: this.songs, index });
     },
     scroll(pos) {
-      if (Math.abs(pos.y) > innerWidth * 0.75 - 50) {
-        this.show = false;
-      } else {
-        this.show = true;
-      }
+      this.percent = Math.abs(pos.y / (innerWidth * 0.7));
     }
   },
   mounted() {},
@@ -116,7 +113,7 @@ export default {
       z-index: 1
       color: $white
       .back
-        absolute: top 5px left 10px
+        absolute: top 2px left 10px
         padding: 10px
         .icon
           font-size: 28px

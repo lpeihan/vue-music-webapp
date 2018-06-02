@@ -4,6 +4,7 @@
       <div class="number">{{index + 1}}</div>
       <p class="name">{{song.name}}</p>
       <p class="singer">{{song.singer}}</p>
+      <div class="more"><icon name="more"></icon></div>
     </div>
   </div>
 </template>
@@ -33,7 +34,7 @@ export default {
   .song-list
     position: relative
     .song
-      padding: 16px 0
+      padding: 16px 30px 16px 0
       border-1px($color-border)
       margin-left: 56px
       position: relative
@@ -51,4 +52,8 @@ export default {
         color: $color-text-l
         font-size: $font-size-small
         no-wrap()
+
+      .more
+        absolute: top 22px right 15px
+        color: $color-text-l
 </style>
