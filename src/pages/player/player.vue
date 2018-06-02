@@ -106,7 +106,7 @@ export default {
       return this.playing ? 'play' : 'play pause';
     },
     percent() {
-      return this.currentTime / this.duration;
+      return this.duration ? this.currentTime / this.duration : 0;
     }
   },
   filters: {
@@ -165,6 +165,7 @@ export default {
     },
     updateProgress(percent) {
       this.$refs.audio.currentTime = percent * this.duration;
+      !this.playing && this.togglePlaying();
     },
     enter(el, done) {
       const { x, y, scale } = this.getPosAndScale();
@@ -223,6 +224,7 @@ export default {
     async currentSong(song) {
       this.currentTime = 0;
       this.duration = 0;
+      this.url = '';
       this.lyric && this.lyric.stop();
 
       await Promise.all([

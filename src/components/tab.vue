@@ -8,7 +8,8 @@
         class="scroll-bar"
         :style="{
           'width': (100 / tabs.length) + '%',
-          'transform': `translate3d(${index / tabs.length * width}px, 0, 0)`
+          'transition-duration': touching ? '0ms' : '400ms',
+          'transform': `translate3d(${((index - translateX / width) / tabs.length) * width}px, 0, 0)`
         }"
       ></div>
     </div>

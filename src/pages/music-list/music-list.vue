@@ -118,7 +118,7 @@ export default {
       .name
         line-height: 65px
         font-size: 17px
-        padding: 0 40px
+        padding: 0 35px 0 45px
         text-align: center
         no-wrap()
         &.name
