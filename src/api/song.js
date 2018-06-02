@@ -4,3 +4,7 @@ import axios from 'axios';
 export function getSong(id) {
   return axios.get(host + `/music/url?id=${id}`);
 }
+
+export function getLyric (id) {
+  return axios.get(host + `/lyric?id=${id}`);
+}

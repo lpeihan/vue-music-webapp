@@ -2,6 +2,9 @@
   <transition name="slide">
     <div class="music-list">
       <div class="navbar" :style="{ 'background-color': `rgba(212, 68, 57, ${percent})` }">
+        <transition name="name">
+          <h1 class="name" v-show="this.percent >= 1">{{musicList.name}}</h1>
+        </transition>
         <div class="back" @click="$router.go(-1)">
           <icon name="back"></icon>
         </div>
@@ -109,11 +112,24 @@ export default {
 
     .navbar
       fixed: top 0 left 0 right 0
-      height: 50px
+      height: 60px
       z-index: 1
       color: $white
+      .name
+        line-height: 65px
+        font-size: 17px
+        padding: 0 40px
+        text-align: center
+        no-wrap()
+        &.name
+          &-enter-active
+          &-leave-active
+            transition: all 0.4s
+          &-enter
+          &-leave-to
+            transform: translateY(-50px)
       .back
-        absolute: top 2px left 10px
+        absolute: top 5px left 10px
         padding: 10px
         .icon
           font-size: 28px

@@ -83,9 +83,10 @@
 <script>
 import animations from 'create-keyframe-animation';
 import { mapGetters, mapMutations } from 'vuex';
-import { getSong } from '../../api/song';
+import { getSong, getLyric } from '../../api/song';
 import ProgressBar from '../../components/progress-bar';
 import { leftpad } from '../../utils';
+import LyricParser from 'lyric-parser';
 
 export default {
   components: {
@@ -95,7 +96,8 @@ export default {
     return {
       url: '',
       duration: 0,
-      currentTime: 0
+      currentTime: 0,
+      lyric: ''
     };
   },
   computed: {
@@ -125,6 +127,19 @@ export default {
       } catch (err) {
         console.log(err);
       }
+    },
+    async getLyric(id) {
+      try {
+        const lyric = (await getLyric(id)).data.lrc.lyric;
+        this.lyric = new LyricParser(lyric, this.handleLyric);
+
+        this.playing && this.lyric.play();
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    handleLyric({lineNum, txt}) {
+      console.log(lineNum, txt);
     },
     togglePlaying() {
       this.setPlaying(!this.playing);
@@ -208,8 +223,12 @@ export default {
     async currentSong(song) {
       this.currentTime = 0;
       this.duration = 0;
+      this.lyric && this.lyric.stop();
 
-      await this.getSong(song.id);
+      await Promise.all([
+        this.getSong(song.id),
+        this.getLyric(song.id)
+      ]);
 
       this.setPlaying(true);
 
@@ -273,13 +292,16 @@ export default {
       .top
         position: relative
         text-align: center
+        height: 100px
+        padding-top: 10px
+
         .back
-          absolute: top 12px left 24px
+          absolute: top 12px left 20px
           transform: rotate(-90deg)
           padding: 8px
         .name
-          padding-top: 8px
-          line-height: 36px
+          line-height: 30px
+          margin: 0 60px
           font-size: $font-size-large
         .singer
           line-height: 20px
