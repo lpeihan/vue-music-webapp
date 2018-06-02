@@ -1,11 +1,11 @@
 const getters = {
   musicList: state => state.musicList,
 
-  playList: state => state.playList,
+  playlist: state => state.playlist,
 
   currentIndex: state => state.currentIndex,
 
-  currentSong: state => state.playList[state.currentIndex],
+  currentSong: state => state.playlist[state.currentIndex],
 
   fullScreen: state => state.fullScreen,
 

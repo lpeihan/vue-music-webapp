@@ -3,26 +3,34 @@ import { mapGetters } from 'vuex';
 
 Vue.mixin({});
 
+const PLAYLIST = 'playlist';
+
 export const playlistMixin = {
   computed: {
     ...mapGetters([
-      'playList'
+      'playlist'
     ])
   },
   methods: {
     appendBottm(el) {
       const bottom = document.createElement('div');
-      bottom.setAttribute('class', 'scroll-bottom');
+      bottom.style.height = '60px';
+      bottom.setAttribute(PLAYLIST, PLAYLIST);
 
-      el.appendChild(bottom);
+      if (el.lastChild.getAttribute(PLAYLIST) !== PLAYLIST) {
+        el.appendChild(bottom);
+      }
     },
     handlePlaylist() {
       throw new Error('component must implement handlePlaylist method');
     }
   },
   watch: {
-    playList(val) {
+    playlist(val) {
       this.handlePlaylist(val);
     }
+  },
+  mounted() {
+    this.handlePlaylist(this.playlist);
   }
 };

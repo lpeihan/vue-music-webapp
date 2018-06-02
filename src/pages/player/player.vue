@@ -1,5 +1,5 @@
 <template>
-  <div class="player" v-if="playList.length">
+  <div class="player" v-if="playlist.length">
     <transition name="normal" @enter="enter" @leave="leave">
       <div class="player-normal" v-show="fullScreen">
         <div class="overlay" :style="{ 'background-image': `url(${currentSong.image})` }"></div>
@@ -115,7 +115,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'fullScreen', 'currentSong', 'playList', 'playing', 'currentIndex', 'mode', 'sequenceList'
+      'fullScreen', 'currentSong', 'playlist', 'playing', 'currentIndex', 'mode', 'sequenceList'
     ]),
     cdCls() {
       return this.playing ? 'play' : 'play pause';
@@ -139,7 +139,7 @@ export default {
       setPlaying: 'SET_PLAYING',
       setCurrentIndex: 'SET_CURRENT_INDEX',
       setMode: 'SET_MODE',
-      setPlayList: 'SET_PLAY_LIST'
+      setPlaylist: 'SET_PLAYLIST'
     }),
     async getSong(id) {
       try {
@@ -178,7 +178,7 @@ export default {
       let index = this.currentIndex - 1;
 
       if (index === -1) {
-        index = this.playList.length - 1;
+        index = this.playlist.length - 1;
       }
 
       this.setCurrentIndex(index);
@@ -186,7 +186,7 @@ export default {
     next() {
       let index = this.currentIndex + 1;
 
-      if (index === this.playList.length) {
+      if (index === this.playlist.length) {
         index = 0;
       }
 
@@ -239,7 +239,7 @@ export default {
       });
 
       this.setCurrentIndex(index);
-      this.setPlayList(list);
+      this.setPlaylist(list);
     },
     enter(el, done) {
       const { x, y, scale } = this.getPosAndScale();

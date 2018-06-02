@@ -72,9 +72,11 @@ export default {
     ...mapMutations({
       setMusicList: 'SET_MUSIC_LIST'
     }),
-    handlePlaylist() {
-      this.appendBottm(this.$refs.scroll.$el.children[0]);
-      this.$refs.scroll.refresh();
+    handlePlaylist(playlist) {
+      if (playlist.length) {
+        this.appendBottm(this.$refs.scroll.$el.children[0]);
+        this.$refs.scroll.refresh();
+      }
     },
     async getBanners() {
       try {

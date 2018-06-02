@@ -3,7 +3,7 @@ import { mode } from '../services/config';
 const state = {
   musicList: {},
 
-  playList: {},
+  playlist: {},
 
   sequenceList: {},
 

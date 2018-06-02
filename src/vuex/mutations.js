@@ -5,8 +5,8 @@ const mutations = {
     state.musicList = musicList;
   },
 
-  [types.SET_PLAY_LIST](state, playList) {
-    state.playList = playList;
+  [types.SET_PLAYLIST](state, playlist) {
+    state.playlist = playlist;
   },
 
   [types.SET_CURRENT_INDEX](state, index) {
