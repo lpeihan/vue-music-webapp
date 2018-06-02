@@ -4,7 +4,7 @@
       <div class="player-normal" v-show="fullScreen">
         <div class="overlay" :style="{ 'background-image': `url(${currentSong.image})` }"></div>
         <div class="top">
-          <div class="back" @click="close(false)">
+          <div class="back" @click="back">
             <icon name="down"></icon>
           </div>
           <p class="name">{{currentSong.name}}</p>
@@ -183,6 +183,9 @@ export default {
         this.setFullScreen(false);
       });
     },
+    back() {
+      history.go(-1);
+    },
     open() {
       this.setFullScreen(true);
     },
@@ -277,7 +280,15 @@ export default {
       this.$nextTick(() => {
         playing ? this.$refs.audio.play() : this.$refs.audio.pause();
       });
+    },
+    fullScreen(fullScreen) {
+      if (fullScreen) {
+        history.pushState({ page: 'full-screen' }, 'full-screen', `${window.location.href}#`);
+      }
     }
+  },
+  mounted() {
+    addEventListener('popstate', this.close);
   }
 };
 </script>
