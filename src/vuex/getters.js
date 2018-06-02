@@ -9,7 +9,11 @@ const getters = {
 
   fullScreen: state => state.fullScreen,
 
-  playing: state => state.playing
+  playing: state => state.playing,
+
+  sequenceList: state => state.sequenceList,
+
+  mode: state => state.mode
 };
 
 export default getters;

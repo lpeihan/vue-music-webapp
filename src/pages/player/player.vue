@@ -41,8 +41,8 @@
             <div class="duration">{{duration | time}}</div>
           </div>
           <div class="btns">
-            <div class="mode">
-              <icon name="random"></icon>
+            <div class="mode" @click="changeMode">
+              <icon :name="modeName"></icon>
             </div>
             <div class="prev" @click="prev">
               <icon name="prev"></icon>
@@ -82,7 +82,7 @@
     <audio
       ref="audio" :src="url" autoplay="autoplay"
       @timeupdate="updateTime"
-      @ended="next"
+      @ended="ended"
     ></audio>
   </div>
 </template>
@@ -92,9 +92,10 @@ import animations from 'create-keyframe-animation';
 import { mapGetters, mapMutations } from 'vuex';
 import { getSong, getLyric } from '../../api/song';
 import ProgressBar from '../../components/progress-bar';
-import { leftpad } from '../../utils';
+import { leftpad, shuffle } from '../../utils';
 import LyricParser from 'lyric-parser';
 import Scroll from '../../components/scroll';
+import { mode } from '../../services/config';
 
 export default {
   components: {
@@ -113,9 +114,14 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['fullScreen', 'currentSong', 'playList', 'playing', 'currentIndex']),
+    ...mapGetters([
+      'fullScreen', 'currentSong', 'playList', 'playing', 'currentIndex', 'mode', 'sequenceList'
+    ]),
     cdCls() {
       return this.playing ? 'play' : 'play pause';
+    },
+    modeName() {
+      return this.mode === mode.loop ? 'loop' : this.mode === mode.random ? 'random' : 'once';
     },
     percent() {
       return this.duration ? this.currentTime / this.duration : 0;
@@ -131,7 +137,9 @@ export default {
     ...mapMutations({
       setFullScreen: 'SET_FULL_SCREEN',
       setPlaying: 'SET_PLAYING',
-      setCurrentIndex: 'SET_CURRENT_INDEX'
+      setCurrentIndex: 'SET_CURRENT_INDEX',
+      setMode: 'SET_MODE',
+      setPlayList: 'SET_PLAY_LIST'
     }),
     async getSong(id) {
       try {
@@ -167,14 +175,31 @@ export default {
       this.lyric && this.lyric.togglePlay();
     },
     prev() {
-      const index = this.currentIndex - 1;
+      let index = this.currentIndex - 1;
+
+      if (index === -1) {
+        index = this.playList.length - 1;
+      }
 
       this.setCurrentIndex(index);
     },
     next() {
-      const index = this.currentIndex + 1;
+      let index = this.currentIndex + 1;
+
+      if (index === this.playList.length) {
+        index = 0;
+      }
 
       this.setCurrentIndex(index);
+    },
+    ended() {
+      if (this.mode === mode.once) {
+        this.$refs.audio.currentTime = 0;
+        this.$refs.audio.play();
+        this.lyric && this.lyric.seek(0);
+      } else {
+        this.next();
+      }
     },
     close() {
       this.showLyric = false;
@@ -198,6 +223,23 @@ export default {
       !this.playing && this.togglePlaying();
 
       this.lyric && this.lyric.seek(this.$refs.audio.currentTime * 1000);
+    },
+    changeMode() {
+      const m = (this.mode + 1) % 3;
+      this.setMode(m);
+
+      let list = this.sequenceList;
+
+      if (m === mode.random) {
+        list = shuffle(list);
+      }
+
+      const index = list.findIndex(item => {
+        return item.id === this.currentSong.id;
+      });
+
+      this.setCurrentIndex(index);
+      this.setPlayList(list);
     },
     enter(el, done) {
       const { x, y, scale } = this.getPosAndScale();
@@ -252,7 +294,10 @@ export default {
     }
   },
   watch: {
-    async currentSong(song) {
+    async currentSong(newSong, oldSong) {
+      if (oldSong && newSong.id === oldSong.id) {
+        return;
+      }
       this.currentTime = 0;
       this.duration = 0;
       this.url = '';
@@ -260,8 +305,8 @@ export default {
       this.lyric && this.lyric.stop();
 
       await Promise.all([
-        this.getSong(song.id),
-        this.getLyric(song.id)
+        this.getSong(newSong.id),
+        this.getLyric(newSong.id)
       ]);
 
       this.setPlaying(true);
@@ -405,6 +450,9 @@ export default {
           padding: 0 8%
           justify-content: space-between
           align-items: center
+          .mode
+            .icon
+              font-size: 26px
           .play
             .icon
               font-size: 40px

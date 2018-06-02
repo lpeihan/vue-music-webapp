@@ -32,7 +32,9 @@ export default {
         minipause: require('./assets/icons/mini-pause.svg'),
         miniplay: require('./assets/icons/mini-play.svg'),
         headphones: require('./assets/icons/headphones.svg'),
-        more: require('./assets/icons/more.svg')
+        more: require('./assets/icons/more.svg'),
+        once: require('./assets/icons/once.svg'),
+        loop: require('./assets/icons/loop.svg')
       }
     };
   }

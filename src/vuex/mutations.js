@@ -19,6 +19,14 @@ const mutations = {
 
   [types.SET_PLAYING](state, flag) {
     state.playing = flag;
+  },
+
+  [types.SET_SEQUENCE_LIST](state, list) {
+    state.sequenceList = list;
+  },
+
+  [types.SET_MODE](state, mode) {
+    state.mode = mode;
   }
 };
 
