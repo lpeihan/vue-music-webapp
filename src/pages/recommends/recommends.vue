@@ -1,6 +1,6 @@
 <template>
   <div class="recommends">
-    <scroll class="recommends-scroll" :loaded="loaded" :bounce-top="false">
+    <scroll class="recommends-scroll" :loaded="loaded" :bounce-top="false" ref="scroll">
       <div>
         <div class="barnners-wrapper" v-if="barnners.length">
           <swiper :interval="4000" class="barnners">
@@ -49,8 +49,12 @@ import Loading from '../../components/loading';
 
 import { getBanners, getRecommends } from '../../api/recommends';
 import { mapMutations } from 'vuex';
+import { playlistMixin } from '../../utils/mixins';
 
 export default {
+  mixins: [
+    playlistMixin
+  ],
   components: {
     Swiper,
     Entry,
@@ -68,6 +72,10 @@ export default {
     ...mapMutations({
       setMusicList: 'SET_MUSIC_LIST'
     }),
+    handlePlaylist() {
+      this.appendBottm(this.$refs.scroll.$el.children[0]);
+      this.$refs.scroll.refresh();
+    },
     async getBanners() {
       try {
         const res = await getBanners();
@@ -97,8 +105,10 @@ export default {
     }
   },
   async created() {
-    await this.getBanners();
-    await this.getRecommends();
+    await Promise.all([
+      this.getBanners(),
+      this.getRecommends()
+    ]);
 
     this.loaded = true;
   }

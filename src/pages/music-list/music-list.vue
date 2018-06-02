@@ -10,6 +10,7 @@
         </div>
       </div>
       <scroll
+        ref="scroll"
         :data="songs"
         :bounce-top="false"
         :listen-scroll="true"
@@ -43,8 +44,12 @@ import SongList from './song-list';
 import Scroll from '../../components/scroll';
 import { createSong } from '../../services/song';
 import Loading from '../../components/loading';
+import { playlistMixin } from '../../utils/mixins';
 
 export default {
+  mixins: [
+    playlistMixin
+  ],
   components: {
     SongList,
     Scroll,
@@ -66,6 +71,10 @@ export default {
   },
   methods: {
     ...mapActions(['selectPlay']),
+    handlePlaylist() {
+      this.appendBottm(this.$refs.scroll.$el.children[0]);
+      this.$refs.scroll.refresh();
+    },
     async getMusicListDetail(id) {
       try {
         const res = await getMusicListDetail(id);
@@ -86,7 +95,6 @@ export default {
       this.percent = Math.abs(pos.y / (innerWidth * 0.7));
     }
   },
-  mounted() {},
   created() {
     this.getMusicListDetail(this.musicList.id || this.$route.params.id);
   }
