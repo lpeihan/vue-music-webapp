@@ -21,7 +21,6 @@
     justify-content: space-between
     background: $color-theme
     .logo
-      relative: top 2px
       .icon
         font-size: 30px
         color: rgba($white, .5)

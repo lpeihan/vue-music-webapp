@@ -1,8 +1,8 @@
 <template>
   <div class="tab">
     <div class="tab-titles">
-      <div class="title" v-for="(tab, index) in tabs" :key="index" @click="go(index)">
-        <span>{{tab}}</span>
+      <div class="title" v-for="(tab, i) in tabs" :key="i" @click="go(i)">
+        <span :class="{ 'active': i === index }">{{tab}}</span>
       </div>
       <div
         class="scroll-bar"
@@ -112,6 +112,9 @@ export default {
       .title
         flex: 1
         line-height: h
+        color: rgba($white, .7)
+      .active
+        color: $white
       .scroll-bar
         absolute: bottom 8px
         height: 2px
