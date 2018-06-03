@@ -63,5 +63,8 @@ export const showMixin = {
   },
   created() {
     addEventListener('popstate', this.close);
+  },
+  beforeDestroy() {
+    removeEventListener('popstate', this.close);
   }
 };
