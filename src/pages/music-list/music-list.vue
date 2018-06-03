@@ -79,10 +79,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['musicList']),
-    count() {
-      return Math.round(this.musicList.playCount / 10000);
-    }
+    ...mapGetters(['musicList'])
   },
   methods: {
     ...mapActions(['selectPlay']),
@@ -142,19 +139,12 @@ export default {
         background-filter(20px, 1.5)
 
       .name
-        line-height: 65px
-        font-size: 17px
+        line-height: 60px
+        font-size: $font-size-medium-x
         padding: 0 35px 0 45px
         text-align: center
         no-wrap()
-        &.name
-          &-enter-active
-          &-leave-active
-            transition: all 0.4s
-          &-enter
-          &-leave-to
-            transform: translateY(-20px)
-            opacity: 0
+
       .back
         absolute: top 5px left 10px
         padding: 10px
@@ -183,7 +173,7 @@ export default {
           flex: 1
           padding: 0 10px
           .name
-            font-size: 17px
+            font-size: $font-size-medium-x
             line-height: 28px
             margin-bottom: 20px
           .info
@@ -195,7 +185,7 @@ export default {
               margin-right: 10px
             .nickname
               color: rgba($white, .8)
-              font-size: 15px
+              font-size: $font-size-medium
 
     .loading-wrapper
       absolute: top 50% left 50%

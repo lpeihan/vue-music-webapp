@@ -33,14 +33,14 @@ export default {
 
   .song-list
     position: relative
-    background: $color-background
     border-radius: 12px
+    background: $color-background
 
     .song
       padding: 16px 30px 16px 0
-      border-1px($color-border)
       margin-left: 56px
       position: relative
+      border-1px($color-border)
 
       .number
         absolute: top 27px left -34px
