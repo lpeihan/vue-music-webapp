@@ -13,7 +13,9 @@ const getters = {
 
   sequenceList: state => state.sequenceList,
 
-  mode: state => state.mode
+  mode: state => state.mode,
+
+  tabIndex: state => state.tabIndex
 };
 
 export default getters;

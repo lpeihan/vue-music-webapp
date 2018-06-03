@@ -27,6 +27,10 @@ const mutations = {
 
   [types.SET_MODE](state, mode) {
     state.mode = mode;
+  },
+
+  [types.SET_TAB_INDEX](state, index) {
+    state.tabIndex = index;
   }
 };
 

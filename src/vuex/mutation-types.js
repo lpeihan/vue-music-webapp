@@ -11,3 +11,5 @@ export const SET_PLAYING = 'SET_PLAYING';
 export const SET_SEQUENCE_LIST = 'SET_SEQUENCE_LIST';
 
 export const SET_MODE = 'SET_MODE';
+
+export const SET_TAB_INDEX = 'SET_TAB_INDEX';

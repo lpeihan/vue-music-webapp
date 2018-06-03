@@ -4,8 +4,8 @@
 
     <tab :style="{ 'height': height + 'px' }" :tabs="tabs">
       <recommends></recommends>
-      <div><progress-circle></progress-circle></div>
-      <div>3</div>
+      <div>2</div>
+      <singers></singers>
     </tab>
 
     <player></player>
@@ -18,7 +18,7 @@ import Headers from './pages/header/header';
 import Tab from './components/tab';
 import Recommends from './pages/recommends/Recommends';
 import Player from './pages/player/player';
-import ProgressCircle from './components/progress-circle';
+import Singers from './pages/singers/singers';
 
 export default {
   components: {
@@ -26,7 +26,7 @@ export default {
     Tab,
     Recommends,
     Player,
-    ProgressCircle
+    Singers
   },
   data() {
     return {

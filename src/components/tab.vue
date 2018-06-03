@@ -1,15 +1,15 @@
 <template>
   <div class="tab">
     <div class="tab-titles">
-      <div class="title" v-for="(tab, i) in tabs" :key="i" @click="go(i)">
-        <span :class="{ 'active': i === index }">{{tab}}</span>
+      <div class="title" v-for="(tab, index) in tabs" :key="index" @click="go(index)">
+        <span :class="{ 'active': index === tabIndex }">{{tab}}</span>
       </div>
       <div
         class="scroll-bar"
         :style="{
           'width': (100 / tabs.length) + '%',
           'transition-duration': touching ? '0ms' : '400ms',
-          'transform': `translate3d(${((index - translateX / width) / tabs.length) * width}px, 0, 0)`
+          'transform': `translate3d(${((tabIndex - translateX / width) / tabs.length) * width}px, 0, 0)`
         }"
       ></div>
     </div>
@@ -22,7 +22,7 @@
       <div
         ref="wrap"
         class="tab-content-wrap"
-        :style="{ 'transform': `translate3d(${translateX - (index * width)}px, 0, 0)` }"
+        :style="{ 'transform': `translate3d(${translateX - (tabIndex * width)}px, 0, 0)` }"
         :class="{ 'transition': !touching }"
       >
         <slot></slot>
@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   props: {
@@ -40,10 +41,12 @@ export default {
       default: () => []
     }
   },
+  computed: {
+    ...mapGetters(['tabIndex'])
+  },
   data() {
     return {
       width: 0,
-      index: 0,
       startX: 0,
       startY: 0,
       endX: 0,
@@ -53,8 +56,11 @@ export default {
     };
   },
   methods: {
+    ...mapMutations({
+      setTabIndex: 'SET_TAB_INDEX'
+    }),
     go(index) {
-      this.index = index;
+      this.setTabIndex(index);
     },
     getAngle(startX, startY, endX, endY) {
       return 360 * Math.atan((endY - startY) / (endX - startX)) / (2 * Math.PI);
@@ -70,7 +76,7 @@ export default {
       const dx = this.endX - this.startX;
       const angle = this.getAngle(this.startX, this.startY, this.endX, this.endY);
 
-      if ((dx < 0 && this.index >= this.tabs.length - 1) || (dx > 0 && this.index === 0)) {
+      if ((dx < 0 && this.tabIndex >= this.tabs.length - 1) || (dx > 0 && this.tabIndex === 0)) {
         return;
       }
 
@@ -83,10 +89,10 @@ export default {
       this.touching = false;
       this.translateX = 0;
 
-      if (percent < -0.3 && this.index < this.tabs.length - 1) {
-        this.index++;
-      } else if (percent > 0.3 && this.index > 0) {
-        this.index--;
+      if (percent < -0.3 && this.tabIndex < this.tabs.length - 1) {
+        this.setTabIndex(this.tabIndex + 1);
+      } else if (percent > 0.3 && this.tabIndex > 0) {
+        this.setTabIndex(this.tabIndex - 1);
       }
     }
   },

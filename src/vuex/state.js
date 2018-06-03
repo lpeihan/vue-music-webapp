@@ -13,7 +13,9 @@ const state = {
 
   playing: false,
 
-  mode: mode.loop
+  mode: mode.loop,
+
+  tabIndex: 0
 };
 
 export default state;
