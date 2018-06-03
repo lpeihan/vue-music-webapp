@@ -22,6 +22,9 @@ export const playlistMixin = {
 
         el.appendChild(bottom);
         this.$refs.scroll.refresh();
+      } else if (!playlist.length && el.lastChild.getAttribute(PLAYLIST) === PLAYLIST) {
+        el.removeChild(el.lastChild);
+        this.$refs.scroll.refresh();
       }
     }
   },

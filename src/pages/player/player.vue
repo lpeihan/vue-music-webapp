@@ -204,7 +204,7 @@ export default {
       }
     },
     close() {
-      if (!location.hash) {
+      if (location.hash.indexOf('full-screen') === -1) {
         this.showLyric = false;
 
         this.$nextTick(() => {
@@ -302,14 +302,19 @@ export default {
   },
   watch: {
     async currentSong(newSong, oldSong) {
-      if (oldSong && newSong.id === oldSong.id) {
+      if (newSong.id === oldSong.id) {
         return;
       }
+
       this.currentTime = 0;
       this.duration = 0;
       this.url = '';
       this.currentLineNum = 0;
       this.lyric && this.lyric.stop();
+
+      if (!newSong.id) {
+        return;
+      }
 
       await Promise.all([
         this.getSong(newSong.id),

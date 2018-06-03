@@ -5,9 +5,9 @@
         <div class="header">
           <div class="mode" @click="changeMode">
             <icon :name="modeName"></icon>
-            <span class="text">{{modeText}} ( {{sequenceList.length}} )</span>
+            <span class="text">{{modeText}} ({{sequenceList.length}})</span>
           </div>
-          <div class="clear">
+          <div class="clear" @click="clear">
             <icon name="clear"></icon>
           </div>
         </div>
@@ -21,7 +21,7 @@
               <span class="volume" v-show="currentSong.id === item.id"><icon name="volume"></icon></span>
               <span>{{item.name}}</span>
               <span class="desc">- {{item.desc}}</span>
-              <div class="delete"><icon name="delete"></icon></div>
+              <div class="delete" @click.stop="deleteItem(item, index)"><icon name="delete"></icon></div>
             </li>
           </ul>
         </scroll>
@@ -32,7 +32,7 @@
 
 <script>
 import { showMixin } from '../../utils/mixins';
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 import Scroll from '../../components/scroll';
 
 export default {
@@ -60,6 +60,7 @@ export default {
     ...mapMutations({
       setCurrentIndex: 'SET_CURRENT_INDEX'
     }),
+    ...mapActions(['deleteSong', 'clearPlaylist']),
     changeMode() {
       this.$emit('changeMode');
     },
@@ -72,12 +73,24 @@ export default {
       this.setCurrentIndex(index);
       this.back();
     },
+    deleteItem(song, index) {
+      this.deleteSong({ song, index });
+    },
+    clear() {
+      this.clearPlaylist();
+      this.back();
+      if (location.hash.indexOf('#full-screen') > -1) {
+        this.back();
+      }
+    },
     scrollToCurrent() {
       const index = this.sequenceList.findIndex(item => {
         return item.id === this.currentSong.id;
       });
 
-      this.$refs.scroll.scrollToElement(this.$refs.item[index], 300);
+      if (index >= 2) {
+        this.$refs.scroll.scrollToElement(this.$refs.item[index - 2], 300);
+      }
     }
   },
   mounted() {
@@ -152,15 +165,17 @@ export default {
             color: $color-theme
 
         .volume
+          relative: top 2px
           .icon
-            font-size: $font-size-medium
+            font-size: $font-size-medium + 1
 
         .desc
           font-size: $font-size-small
           color: $color-text-l
         .delete
-          absolute: top 50% right 5px
+          absolute: top 50% right 0
           transform: translateY(-50%)
+          padding: 5px
           .icon
-            color: $color-text-l
+            color: rgba($color-text-l, .6)
 </style>
