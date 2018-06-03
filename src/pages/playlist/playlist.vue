@@ -7,7 +7,7 @@
             <icon :name="modeName"></icon>
             <span class="text">{{modeText}} ({{sequenceList.length}})</span>
           </div>
-          <div class="clear" @click="clear">
+          <div class="clear" @click="openConfirm">
             <icon name="clear"></icon>
           </div>
         </div>
@@ -26,6 +26,7 @@
           </ul>
         </scroll>
       </div>
+      <confirm ref="confirm" @confirm="clear"></confirm>
     </div>
   </transition>
 </template>
@@ -34,12 +35,14 @@
 import { showMixin } from '../../utils/mixins';
 import { mapGetters, mapMutations, mapActions } from 'vuex';
 import Scroll from '../../components/scroll';
+import Confirm from '../../components/confirm';
 
 export default {
   mixins: [
     showMixin
   ],
   components: {
+    Confirm,
     Scroll
   },
   props: {
@@ -75,6 +78,9 @@ export default {
     },
     deleteItem(song, index) {
       this.deleteSong({ song, index });
+    },
+    openConfirm() {
+      this.$refs.confirm.open('confirm');
     },
     clear() {
       this.clearPlaylist();

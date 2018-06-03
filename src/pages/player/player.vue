@@ -61,7 +61,7 @@
       </div>
     </transition>
 
-    <div class="player-mini" @click="open(true)">
+    <div class="player-mini" @click="open()">
       <div class="img" :style="{ 'background-image': `url(${currentSong.image})` }"></div>
 
       <div class="text">
@@ -246,7 +246,7 @@ export default {
       this.setPlaylist(list);
     },
     openPlaylist() {
-      this.$refs.playlist.open();
+      this.$refs.playlist.open('playlist');
     },
     enter(el, done) {
       const { x, y, scale } = this.getPosAndScale();

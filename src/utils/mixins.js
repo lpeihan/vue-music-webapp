@@ -41,12 +41,14 @@ export const playlistMixin = {
 export const showMixin = {
   data() {
     return {
-      show: false
+      show: false,
+      name: 'default'
     };
   },
   methods: {
-    open(name = 'default') {
+    open(name = this.name) {
       this.show = true;
+      this.name = name;
       const hash = location.hash ? `&${name}` : `#${name}`;
       history.pushState({ page: name }, name, `${location.href}${hash}`);
     },
@@ -54,7 +56,9 @@ export const showMixin = {
       history.go(-1);
     },
     close() {
-      this.show = false;
+      if (location.hash.indexOf(this.name) === -1) {
+        this.show = false;
+      }
     }
   },
   created() {
