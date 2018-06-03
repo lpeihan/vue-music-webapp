@@ -1,10 +1,14 @@
 <template>
   <transition name="slide">
     <div class="music-list">
-      <div class="navbar" :style="{ 'background-color': `rgba(212, 68, 57, ${percent})` }">
-        <transition name="name">
-          <h1 class="name" v-show="this.percent >= 1">{{musicList.name}}</h1>
-        </transition>
+      <div class="navbar">
+        <div class="filter"
+          :style="{
+            background: `url(${musicList.picUrl}) center`,
+            'opacity': this.percent
+          }">
+        </div>
+        <h1 class="name" :style="{'opacity': this.percent }">{{musicList.name}}</h1>
         <div class="back" @click="$router.go(-1)">
           <icon name="back"></icon>
         </div>
@@ -34,13 +38,6 @@
               </div>
             </div>
           </div>
-          <!-- <div class="bg"
-            :style="{ backgroundImage: `url(${musicList.picUrl})` }">
-            <div class="text" v-show="show">
-              <h1 class="name">{{musicList.name}}</h1>
-              <p class="play-count"><icon name="headphones"></icon>{{count}}万</p>
-            </div>
-          </div> -->
 
           <song-list :songs="songs" @select="selectSong"></song-list>
         </div>
@@ -140,6 +137,10 @@ export default {
       height: 60px
       z-index: 1
       color: $white
+      overflow: hidden
+      .filter
+        background-filter(20px, 1.5)
+
       .name
         line-height: 65px
         font-size: 17px
@@ -164,18 +165,9 @@ export default {
       position: relative
       height: 0
       padding-bottom: 65%
-
       .filter
-        absolute: top 0 left 0 right 0 bottom 0
-        background-size: cover
-        filter: blur(40px)
-        transform: scale(1.5)
-        z-index: -1
+        background-filter()
 
-        &::before
-          content: ''
-          absolute: top 0 left 0 right 0 bottom 0
-          background: rgba(7, 17, 27, 0.1)
       .content
         absolute: top 50px left 0 right 0 bottom 0
         display: flex

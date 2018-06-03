@@ -34,9 +34,20 @@ relative()
 
 
 border-1px($color, $left = 0, $right = 0)
-  position : relative
+  position: relative
   &::after
     content: ''
     absolute: left $left bottom 0 right $right
     border-top: 1px solid $color
-    transform : scaleY(0.5)
+    transform: scaleY(0.5)
+
+background-filter($blur = 40px, $scale = 1.5, $background = rgba(7, 17, 27, 0.2))
+  absolute: top 0 left 0 right 0 bottom 0
+  background-size: cover
+  filter: blur($blur)
+  transform: scale($scale)
+  z-index: -1
+  &::before
+    content: ''
+    absolute: top 0 left 0 right 0 bottom 0
+    background: $background
