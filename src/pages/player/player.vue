@@ -78,7 +78,7 @@
         </div>
       </div>
     </div>
-    <playlist ref="playlist"></playlist>
+    <playlist ref="playlist" :mode-name="modeName" @changeMode="changeMode"></playlist>
     <audio
       ref="audio" :src="url" autoplay="autoplay"
       @timeupdate="updateTime"

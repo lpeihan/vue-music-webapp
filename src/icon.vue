@@ -34,7 +34,10 @@ export default {
         headphones: require('./assets/icons/headphones.svg'),
         more: require('./assets/icons/more.svg'),
         once: require('./assets/icons/once.svg'),
-        loop: require('./assets/icons/loop.svg')
+        loop: require('./assets/icons/loop.svg'),
+        delete: require('./assets/icons/delete.svg'),
+        clear: require('./assets/icons/clear.svg'),
+        volume: require('./assets/icons/volume.svg')
       }
     };
   }

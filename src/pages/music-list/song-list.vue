@@ -3,7 +3,7 @@
     <div class="song" v-for="(song, index) in songs" :key="index" @click="select(song, index)">
       <div class="number">{{index + 1}}</div>
       <p class="name">{{song.name}}</p>
-      <p class="singer">{{song.singer}}</p>
+      <p class="singer">{{song.singer}} - {{song.desc}}</p>
       <div class="more"><icon name="more"></icon></div>
     </div>
   </div>
