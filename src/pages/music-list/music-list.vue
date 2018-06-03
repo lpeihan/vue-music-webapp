@@ -18,13 +18,29 @@
         @scroll="scroll"
       >
         <div>
-          <div class="bg"
+          <div class="header">
+            <div class="filter" :style="{ background: `url(${musicList.picUrl}) center` }"></div>
+
+            <div class="content">
+              <div class="left">
+                <img :src="musicList.picUrl" class="img">
+              </div>
+              <div class="right">
+                <h1 class="name">{{musicList.name}}</h1>
+                <div class="info">
+                  <img :src="avatar" alt="" class="avatar">
+                  <span class="nickname">{{nickname}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="bg"
             :style="{ backgroundImage: `url(${musicList.picUrl})` }">
             <div class="text" v-show="show">
               <h1 class="name">{{musicList.name}}</h1>
               <p class="play-count"><icon name="headphones"></icon>{{count}}万</p>
             </div>
-          </div>
+          </div> -->
 
           <song-list :songs="songs" @select="selectSong"></song-list>
         </div>
@@ -60,7 +76,9 @@ export default {
     return {
       songs: [],
       show: true,
-      percent: 0
+      percent: 0,
+      avatar: '',
+      nickname: ''
     };
   },
   computed: {
@@ -76,6 +94,8 @@ export default {
         const res = await getMusicListDetail(id);
 
         if (res.status === 200) {
+          this.avatar = res.data.playlist.creator.avatarUrl;
+          this.nickname = res.data.playlist.creator.nickname;
           this.songs = res.data.playlist.tracks.map((song) => {
             return createSong(song);
           });
@@ -88,7 +108,7 @@ export default {
       this.selectPlay({ list: this.songs, index });
     },
     scroll(pos) {
-      this.percent = Math.abs(pos.y / (innerWidth * 0.7));
+      this.percent = Math.abs(pos.y / (innerWidth * 0.6));
     }
   },
   created() {
@@ -105,6 +125,7 @@ export default {
     fixed: top 0 left 0 right 0 bottom 0
     background: $color-background
     z-index: 10
+    overflow-x: hidden
 
     &.slide
       &-enter-active
@@ -131,36 +152,58 @@ export default {
             transition: all 0.4s
           &-enter
           &-leave-to
-            transform: translateY(-50px)
+            transform: translateY(-20px)
+            opacity: 0
       .back
         absolute: top 5px left 10px
         padding: 10px
         .icon
           font-size: 28px
 
-    .bg
+    .header
       position: relative
-      size: 100% 0
-      padding-bottom: 70%
       height: 0
-      background-size: cover
-      &::before
-        content: ''
-        absolute: top 0 left 0 right 0 bottom 0
-        background: $color-overlay
-      .text
-        absolute: bottom 20px left 20px right 20px
-        color: $white
-        .name
-          font-size: 17px
+      padding-bottom: 65%
 
-        .play-count
-          margin-top: 10px
-          font-size: $font-size-small
-          .icon
-            font-size: 14px
-            relative: top 2px
-            margin-right: 2px
+      .filter
+        absolute: top 0 left 0 right 0 bottom 0
+        background-size: cover
+        filter: blur(40px)
+        transform: scale(1.5)
+        z-index: -1
+
+        &::before
+          content: ''
+          absolute: top 0 left 0 right 0 bottom 0
+          background: rgba(7, 17, 27, 0.1)
+      .content
+        absolute: top 50px left 0 right 0 bottom 0
+        display: flex
+        padding: 20px 0
+        .left
+          flex: 0 0 35%
+          padding-left: 20px
+          .img
+            border-radius: 5px
+            width: 100%
+        .right
+          color: $white
+          flex: 1
+          padding: 0 10px
+          .name
+            font-size: 17px
+            line-height: 28px
+            margin-bottom: 20px
+          .info
+            display: flex
+            align-items: center
+            .avatar
+              size: 32px
+              border-radius: 50%
+              margin-right: 10px
+            .nickname
+              color: rgba($white, .8)
+              font-size: 15px
 
     .loading-wrapper
       absolute: top 50% left 50%

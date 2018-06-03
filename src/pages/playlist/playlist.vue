@@ -12,7 +12,7 @@
           </div>
         </div>
 
-        <scroll class="list" :data="sequenceList" ref="scroll">
+        <scroll class="list" :data="playlist" ref="scroll">
           <ul>
             <li class="item" v-for="(item, index) in sequenceList" :key="index"
               ref="item"

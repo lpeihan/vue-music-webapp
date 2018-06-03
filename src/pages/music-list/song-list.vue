@@ -33,6 +33,9 @@ export default {
 
   .song-list
     position: relative
+    background: $color-background
+    border-radius: 12px
+
     .song
       padding: 16px 30px 16px 0
       border-1px($color-border)
