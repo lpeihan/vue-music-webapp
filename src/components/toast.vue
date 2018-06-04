@@ -49,4 +49,5 @@ export default {
       &-enter
       &-leave-to
         transform: translate(-50%, 30px)
+        opacity: 0
 </style>

@@ -59,7 +59,7 @@ export default {
       &-leave-to
         opacity: 0
         .confirm-content
-          transform: translate(-50%, -50%) scale(0)
+          transform: translate(-50%, -50%) scale(.5)
 
     .confirm-content
       absolute: top 50% left 50%
