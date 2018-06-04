@@ -217,7 +217,7 @@ export default {
 
     .shortcuts
       absolute: top 0 right 8px
-      padding: 14% 0 18%
+      padding: 10% 0 20%
       width: 30px
       text-align: center
       display: flex

@@ -28,10 +28,11 @@
               </div>
               <div class="right">
                 <h1 class="name">{{title}}</h1>
-                <div class="info">
+                <div class="info" v-if="avatar">
                   <img :src="avatar" alt="" class="avatar">
                   <span class="nickname">{{nickname}}</span>
                 </div>
+                <div class="desc" v-else>{{desc}}</div>
               </div>
             </div>
           </div>
@@ -81,6 +82,10 @@ export default {
       default: ''
     },
     title: {
+      type: String,
+      default: ''
+    },
+    desc: {
       type: String,
       default: ''
     }
@@ -163,10 +168,16 @@ export default {
           color: $white
           flex: 1
           padding: 0 10px
+          position: relative
           .name
-            font-size: $font-size-medium-x
+            font-size: $font-size-large - 1
             line-height: 28px
             margin-bottom: 20px
+          .desc
+            absolute: bottom 20px
+            color: rgba($white, .8)
+            font-size: $font-size-medium
+            line-height: 20px
           .info
             display: flex
             align-items: center

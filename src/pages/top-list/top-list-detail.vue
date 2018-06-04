@@ -3,6 +3,7 @@
     :songs="songs"
     :image="topList.coverImgUrl"
     :title="topList.name"
+    :desc="topList.description"
   >
   </music-list>
 </template>

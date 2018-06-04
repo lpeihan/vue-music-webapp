@@ -1,5 +1,10 @@
 <template>
   <div class="song-list">
+    <div class="title" v-show="songs.length" @click="select(songs[0], 0)">
+      <icon name="play"></icon>
+      <span class="play-all">播放全部</span>
+      <span class="count">({{songs.length}}首)</span>
+    </div>
     <div class="song" v-for="(song, index) in songs" :key="index" @click="select(song, index)">
       <div class="number">{{index + 1}}</div>
       <p class="name">{{song.name}}</p>
@@ -34,6 +39,21 @@ export default {
     border-radius: 12px
     background: $color-background
 
+    .title
+      display: flex
+      height: 50px
+      align-items: center
+      border-1px($color-border)
+      padding: 0 16px
+      .icon
+        color: $color-text-l
+        relative: top 2px
+      .play-all
+        padding-left: 15px
+      .count
+        color: $color-text-l
+        margin-left: 2px
+        font-size: 15px
     .song
       padding: 16px 30px 16px 0
       margin-left: 56px
