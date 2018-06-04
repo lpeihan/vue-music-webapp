@@ -80,7 +80,7 @@ export default {
         return;
       }
 
-      if (Math.abs(dx) > 6 && Math.abs(angle) < 20) {
+      if (Math.abs(dx) > 6 && Math.abs(angle) < 30) {
         this.translateX = dx > 0 ? Math.min(dx, this.width) : Math.max(dx, -this.width);
       }
     },

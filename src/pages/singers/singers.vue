@@ -1,8 +1,31 @@
 <template>
-  <scroll class="singers" :data="singers" ref="scroll">
-    <ul>
-      <li class="singer" v-for="(singer, index) in singers" :key="index">
-        {{singer.name}}
+  <scroll
+    class="singers" ref="scroll"
+    :data="singers" :bounce-top="false" :listen-scroll="true" :probe-type="3"
+    @scroll="scroll"
+  >
+    <ul class="groups">
+      <li class="group" v-for="(group, index) in singers" :key="index" ref="group">
+        <ul class="items">
+          <h1 class="title">{{group.title}}</h1>
+          <li v-for="item in group.items" :key="item.id" class="item">
+            <img v-lazy="item.avatar" alt="avatar" width="40" height="40" class="avatar">
+            <p class="name">{{item.name}}</p>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <ul
+      class="shortcuts"
+      @touchstart.stop="handleTouchstart"
+      @touchmove.stop="handleTouchmove"
+    >
+      <li v-for="(group, index) in singers" :key="group.title"
+        :class="{ 'active': index === currentIndex }"
+        :data-index="index"
+
+      >
+        {{group.title[0]}}
       </li>
     </ul>
     <div class="loading-wrapper">
@@ -25,13 +48,33 @@ export default {
   },
   data() {
     return {
-      singers: []
+      singers: [],
+      currentIndex: 0,
+      listHeight: [],
+      startY: 0
     };
   },
   computed: {
     ...mapGetters(['tabIndex'])
   },
   methods: {
+    scroll(pos) {
+      const list = this.listHeight;
+
+      if (pos.y >= 0) {
+        this.currentIndex = 0;
+        return;
+      }
+
+      for (let i = 0; i < list.length - 1; i++) {
+        let h1 = list[i];
+        let h2 = list[i + 1];
+
+        if (-pos.y >= h1 && -pos.y < h2) {
+          this.currentIndex = i;
+        }
+      }
+    },
     async getSingers() {
       try {
         const singers = (await getSingers()).data.artists;
@@ -45,6 +88,31 @@ export default {
       } catch (err) {
         console.log(err);
       }
+    },
+    handleTouchstart(e) {
+      this.index = parseInt(e.target.getAttribute('data-index'), 10);
+      this.startY = e.touches[0].pageY;
+
+      this.$refs.scroll.scrollToElement(this.$refs.group[this.index], 150);
+    },
+    handleTouchmove(e) {
+      const endY = e.touches[0].pageY;
+      const deltaIndex = (endY - this.startY) / 16 | 0;
+
+      const index = this.index + deltaIndex;
+      this.$refs.scroll.scrollToElement(this.$refs.group[index], 150);
+    },
+    calculateHeight() {
+      const groupList = this.$refs.group;
+      let height = 0;
+
+      this.listHeight.push(height);
+
+      groupList.forEach((item, idnex) => {
+        height += item.clientHeight;
+
+        this.listHeight.push(height);
+      });
     },
     nomalizeSingers(singers) {
       const groups = {};
@@ -85,9 +153,13 @@ export default {
     }
   },
   watch: {
-    tabIndex() {
+    async tabIndex() {
       if (this.tabIndex === 2 && !this.singers.length) {
-        this.getSingers();
+        await this.getSingers();
+
+        this.$nextTick(() => {
+          this.calculateHeight();
+        });
       }
     }
   }
@@ -99,10 +171,54 @@ export default {
   @import "../../styles/mixins"
 
   .singers
-    height: 100%
     position: relative
+
+    .groups
+      padding: 0
+
+      .group:first-child
+        .title
+          padding-left: 16px
+
+      .title
+        padding: 0 24px
+        line-height: 24px
+        color: $white
+        font-size: $font-size-medium
+        background: rgba(0, 0, 0, .1)
+
+      .item
+        padding: 0 10px
+        display: flex
+        height: 60px
+        align-items: center
+        .avatar
+          border-radius: 50%
+        .name
+          margin-left: 10px
+          font-size: 15px
+
+    .shortcuts
+      absolute: top 0 right 8px
+      padding: 15% 0 20%
+      width: 30px
+      text-align: center
+      display: flex
+      flex-direction: column
+      justify-content: space-between
+      height: 100%
+      box-sizing: border-box
+
+      li
+        font-family: Helvetica
+        color: $color-text-l
+        font-size: $font-size-small
+        padding: 2px 0
+        &.active
+          color: $color-theme
 
     .loading-wrapper
       absolute: top 50% left 50%
       transform: translate3d(-50%, -50%, 0)
+
 </style>
