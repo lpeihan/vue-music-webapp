@@ -25,8 +25,12 @@ import { getTopList } from '../../api/top-list';
 import { mapGetters, mapMutations } from 'vuex';
 import Scroll from '../../components/scroll';
 import Loading from '../../components/loading';
+import { playlistMixin } from '../../utils/mixins';
 
 export default {
+  mixins: [
+    playlistMixin
+  ],
   components: {
     Scroll,
     Loading
@@ -59,6 +63,10 @@ export default {
     async tabIndex() {
       if (this.tabIndex === 1 && !this.tops.length) {
         await this.getTopList();
+
+        this.$nextTick(() => {
+          this.appendBottm(this.playlist);
+        });
       }
     }
   }

@@ -44,8 +44,12 @@ import { mapGetters, mapMutations } from 'vuex';
 import Scroll from '../../components/scroll';
 import Loading from '../../components/loading';
 import pinyin from 'pinyin';
+import { playlistMixin } from '../../utils/mixins';
 
 export default {
+  mixins: [
+    playlistMixin
+  ],
   components: {
     Scroll,
     Loading
@@ -171,6 +175,7 @@ export default {
 
         this.$nextTick(() => {
           this.calculateHeight();
+          this.appendBottm(this.playlist);
         });
       }
     }
