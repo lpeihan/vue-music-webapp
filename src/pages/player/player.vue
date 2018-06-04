@@ -79,6 +79,7 @@
       </div>
     </div>
     <playlist ref="playlist" :mode-name="modeName" @changeMode="changeMode"></playlist>
+    <toast ref="toast"></toast>
     <audio
       ref="audio" :src="url" autoplay="autoplay"
       @timeupdate="updateTime"
@@ -97,12 +98,14 @@ import LyricParser from 'lyric-parser';
 import Scroll from '../../components/scroll';
 import { mode } from '../../services/config';
 import Playlist from '../playlist/playlist';
+import Toast from '../../components/toast';
 
 export default {
   components: {
     ProgressBar,
     Scroll,
-    Playlist
+    Playlist,
+    Toast
   },
   data() {
     return {
@@ -127,6 +130,9 @@ export default {
     },
     percent() {
       return this.duration ? this.currentTime / this.duration : 0;
+    },
+    modeText() {
+      return this.modeName === 'loop' ? '循环播放' : this.modeName === 'random' ? '随机播放' : '单曲循环';
     }
   },
   filters: {
@@ -231,6 +237,8 @@ export default {
     changeMode() {
       const m = (this.mode + 1) % 3;
       this.setMode(m);
+
+      this.$refs.toast.open(this.modeText);
 
       let list = this.sequenceList;
 

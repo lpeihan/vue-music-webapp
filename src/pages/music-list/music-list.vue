@@ -174,10 +174,11 @@ export default {
             line-height: 28px
             margin-bottom: 20px
           .desc
-            absolute: bottom 20px
+            absolute: bottom 20px left 10px right 10px
             color: rgba($white, .8)
             font-size: $font-size-medium
             line-height: 20px
+            max-height: 65%
           .info
             display: flex
             align-items: center
