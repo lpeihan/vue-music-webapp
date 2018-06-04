@@ -17,7 +17,9 @@ const getters = {
 
   tabIndex: state => state.tabIndex,
 
-  singer: state => state.singer
+  singer: state => state.singer,
+
+  topList: state => state.topList
 };
 
 export default getters;

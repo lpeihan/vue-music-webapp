@@ -17,7 +17,9 @@ const state = {
 
   tabIndex: 0,
 
-  singer: {}
+  singer: {},
+
+  topList: {}
 };
 
 export default state;

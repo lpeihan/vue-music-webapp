@@ -62,7 +62,6 @@ export default {
     SongList,
     Scroll,
     Loading
-
   },
   props: {
     songs: {

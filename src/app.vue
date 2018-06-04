@@ -4,7 +4,7 @@
 
     <tab :style="{ 'height': height + 'px' }" :tabs="tabs">
       <recommends></recommends>
-      <div>2</div>
+      <top-list></top-list>
       <singers></singers>
     </tab>
 
@@ -19,6 +19,7 @@ import Tab from './components/tab';
 import Recommends from './pages/recommends/Recommends';
 import Player from './pages/player/player';
 import Singers from './pages/singers/singers';
+import TopList from './pages/top-list/top-list';
 
 export default {
   components: {
@@ -26,7 +27,8 @@ export default {
     Tab,
     Recommends,
     Player,
-    Singers
+    Singers,
+    TopList
   },
   data() {
     return {
