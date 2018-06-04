@@ -95,9 +95,9 @@ export default {
       }
     },
     selectRecommend(recommend) {
-      this.$router.push(`/recommends/${recommend.id}`);
-
       this.setMusicList(recommend);
+
+      this.$router.push(`/recommends/${recommend.id}`);
     }
   },
   async created() {

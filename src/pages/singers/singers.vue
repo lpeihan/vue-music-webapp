@@ -8,7 +8,11 @@
       <li class="group" v-for="(group, index) in singers" :key="index" ref="group">
         <ul class="items">
           <h1 class="title">{{group.title}}</h1>
-          <li v-for="item in group.items" :key="item.id" class="item">
+          <li
+            v-for="(item, index) in group.items" :key="index"
+            class="item"
+            @click="selectSinger(item, index)"
+          >
             <img v-lazy="item.avatar" alt="avatar" width="40" height="40" class="avatar">
             <p class="name">{{item.name}}</p>
           </li>
@@ -36,7 +40,7 @@
 
 <script>
 import { getSingers } from '../../api/singers';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import Scroll from '../../components/scroll';
 import Loading from '../../components/loading';
 import pinyin from 'pinyin';
@@ -58,6 +62,14 @@ export default {
     ...mapGetters(['tabIndex'])
   },
   methods: {
+    ...mapMutations({
+      setSinger: 'SET_SINGER'
+    }),
+    selectSinger(singer, index) {
+      this.setSinger(singer);
+
+      this.$router.push(`/singers/${singer.id}`);
+    },
     scroll(pos) {
       const list = this.listHeight;
 

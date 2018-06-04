@@ -403,6 +403,7 @@ export default {
         .singer
           line-height: 20px
           font-size: $font-size-medium
+          margin: 0 50px
 
       .middle
         absolute: top 120px left 0 right 0 bottom 170px

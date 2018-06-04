@@ -32,6 +32,10 @@ export default {
   methods: {
     async getRecommendDetail(id) {
       try {
+        if (!id) {
+          this.$router.push('/');
+          return;
+        }
         const res = await getRecommendDetail(id);
 
         if (res.status === 200) {
@@ -47,7 +51,7 @@ export default {
     }
   },
   created() {
-    this.getRecommendDetail(this.musicList.id || this.$route.params.id);
+    this.getRecommendDetail(this.musicList.id);
   }
 };
 </script>

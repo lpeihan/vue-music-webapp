@@ -31,6 +31,10 @@ const mutations = {
 
   [types.SET_TAB_INDEX](state, index) {
     state.tabIndex = index;
+  },
+
+  [types.SET_SINGER](state, singer) {
+    state.singer = singer;
   }
 };
 

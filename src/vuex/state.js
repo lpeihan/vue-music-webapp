@@ -15,7 +15,9 @@ const state = {
 
   mode: mode.loop,
 
-  tabIndex: 0
+  tabIndex: 0,
+
+  singer: {}
 };
 
 export default state;

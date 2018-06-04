@@ -8,11 +8,20 @@ class Song {
   }
 }
 
+function singerName(names) {
+  let name = [];
+  name = names.map((item) => {
+    return item.name;
+  });
+
+  return name.join('/');
+}
+
 export function createSong(song) {
   return new Song({
     id: song.id,
     name: `${song.name}`,
-    singer: `${song.ar[0].name}`,
+    singer: singerName(song.ar),
     image: song.al.picUrl,
     desc: `${song.al.name}`
   });
