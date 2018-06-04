@@ -9,6 +9,6 @@ export function getRecommends() {
   return axios.get(host + '/personalized');
 }
 
-export function getMusicListDetail(id) {
+export function getRecommendDetail(id) {
   return axios.get(host + `/playlist/detail?id=${id}`);
 }

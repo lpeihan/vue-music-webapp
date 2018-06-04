@@ -20,9 +20,7 @@ export default {
   methods: {
     select(song, index) {
       this.$emit('select', song, index);
-    },
-    filterName() {},
-    filterSinger() {}
+    }
   }
 };
 </script>

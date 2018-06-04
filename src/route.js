@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import MusicList from './pages/music-list/music-list';
+import RecommendDetail from './pages/recommends/recommend-detail';
 
 Vue.use(Router);
 
@@ -9,8 +9,8 @@ export default new Router({
   routes: [
     {
       path: '/recommends/:id',
-      name: 'musicList',
-      component: MusicList
+      name: 'recommendsDetail',
+      component: RecommendDetail
     }
   ]
 });
