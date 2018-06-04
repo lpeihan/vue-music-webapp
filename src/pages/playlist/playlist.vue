@@ -20,7 +20,7 @@
               :class="{'active': currentSong.id === item.id }">
               <span class="volume" v-show="currentSong.id === item.id"><icon name="volume"></icon></span>
               <span>{{item.name}}</span>
-              <span class="desc">- {{item.desc}}</span>
+              <span class="desc">- {{item.singer}}</span>
               <div class="delete" @click.stop="deleteItem(item, index)"><icon name="delete"></icon></div>
             </li>
           </ul>
