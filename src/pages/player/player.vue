@@ -387,11 +387,12 @@ export default {
       .overlay
         absolute: left 0 right 0 bottom 0 top 0
         z-index: -1
-        filter: blur(30px)
-        background-size: 100% 100%
+        filter: blur(40px)
+        transform: scale(1.5)
+        background-size: cover
         &::after
           content: ''
-          absolute: top -100px left -100px right -100px bottom -100px
+          absolute: top 0 left 0 right 0 bottom 0
           background: $color-overlay
 
       .top
