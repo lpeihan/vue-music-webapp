@@ -5,8 +5,14 @@ import Icon from './icon';
 import store from './vuex/store';
 import VueLazyload from 'vue-lazyload';
 
+/* eslint-disable no-unused-vars */
+import VConsole from 'vconsole';
+
 import './utils/axios';
+import './utils/directives';
 import './styles/index.styl';
+
+const vConsole = new VConsole();
 
 Vue.component('icon', Icon);
 

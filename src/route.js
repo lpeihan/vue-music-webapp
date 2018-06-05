@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import RecommendDetail from './pages/recommends/recommend-detail';
 import SingerDetail from './pages/singers/singer-detail';
 import TopListDetail from './pages/top-list/top-list-detail';
+import Search from './pages/search/search';
 
 Vue.use(Router);
 
@@ -23,6 +24,11 @@ export default new Router({
       path: '/top-list/:id',
       name: 'topListDetail',
       component: TopListDetail
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: Search
     }
   ]
 });

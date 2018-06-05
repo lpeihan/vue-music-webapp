@@ -4,7 +4,9 @@
     <div class="logo">
       <icon name="logo"></icon>
     </div>
-    <icon name="search"></icon>
+    <div class="search" @click="$router.push('/search')">
+      <icon name="search"></icon>
+    </div>
   </div>
 </template>
 

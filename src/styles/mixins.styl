@@ -2,6 +2,8 @@
 // Mixins
 // --------------------------------------------------
 
+@import "./variables"
+
 size()
   if length(arguments) == 1
     width: arguments[0]
@@ -33,7 +35,7 @@ relative()
   -pos('relative', arguments)
 
 
-border-1px($color, $left = 0, $right = 0)
+border-1px($color = $color-border, $left = 0, $right = 0)
   position: relative
   &::after
     content: ''

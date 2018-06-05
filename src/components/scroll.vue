@@ -40,6 +40,7 @@ export default {
       this.scroll = new BScroll(this.$el, {
         probeType: this.probeType,
         click: true,
+        tap: 'myCustomTapEvent',
         bounce: {
           top: this.bounceTop
         }
