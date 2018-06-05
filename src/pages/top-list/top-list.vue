@@ -64,9 +64,7 @@ export default {
       if (this.tabIndex === 1 && !this.tops.length) {
         await this.getTopList();
 
-        this.$nextTick(() => {
-          this.appendBottm(this.playlist);
-        });
+        this.appendBottm(this.playlist);
       }
     }
   }

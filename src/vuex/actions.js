@@ -46,12 +46,22 @@ const actions = {
     const playlist = state.playlist.slice();
     const sequenceList = state.sequenceList.slice();
 
-    playlist.unshift(song);
-    sequenceList.unshift(song);
+    const fIndex = playlist.findIndex(item => {
+      return item.id === song.id;
+    });
+
+    let index = 0;
+
+    if (fIndex > -1) {
+      index = fIndex;
+    } else {
+      playlist.unshift(song);
+      sequenceList.unshift(song);
+    }
 
     commit(types.SET_PLAYLIST, playlist);
     commit(types.SET_SEQUENCE_LIST, sequenceList);
-    commit(types.SET_CURRENT_INDEX, 0);
+    commit(types.SET_CURRENT_INDEX, index);
     commit(types.SET_FULL_SCREEN, true);
     commit(types.SET_PLAYING, true);
   }

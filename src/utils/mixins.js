@@ -13,21 +13,23 @@ export const playlistMixin = {
     ])
   },
   methods: {
-    appendBottm(playlist) {
-      const el = this.$refs.scroll.$el.children[0];
-      const lastChild = el.lastChild;
+    appendBottm(playlist = this.playlist) {
+      this.$nextTick(() => {
+        const el = this.$refs.scroll.$el.children[0];
+        const lastChild = el.lastChild;
 
-      if (playlist.length && lastChild && lastChild.getAttribute(PLAYLIST) !== PLAYLIST) {
-        const bottom = document.createElement('div');
-        bottom.style.height = '60px';
-        bottom.setAttribute(PLAYLIST, PLAYLIST);
+        if (playlist.length && lastChild && lastChild.nodeName !== '#text' && lastChild.getAttribute(PLAYLIST) !== PLAYLIST) {
+          const bottom = document.createElement('div');
+          bottom.style.height = '60px';
+          bottom.setAttribute(PLAYLIST, PLAYLIST);
 
-        el.appendChild(bottom);
-        this.$refs.scroll.refresh();
-      } else if (!playlist.length && lastChild && lastChild.getAttribute(PLAYLIST) === PLAYLIST) {
-        el.removeChild(lastChild);
-        this.$refs.scroll.refresh();
-      }
+          el.appendChild(bottom);
+          this.$refs.scroll.refresh();
+        } else if (!playlist.length && lastChild && lastChild.nodeName !== '#text' && lastChild.getAttribute(PLAYLIST) === PLAYLIST) {
+          el.removeChild(lastChild);
+          this.$refs.scroll.refresh();
+        }
+      });
     }
   },
   watch: {

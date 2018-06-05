@@ -19,6 +19,7 @@
               </li>
             </ul>
           </div>
+          <div class="scroll-bottom" style="height: 60px"></div>
         </div>
       </scroll>
 
@@ -75,8 +76,12 @@ import Scroll from '../../components/scroll';
 import Loading from '../../components/loading';
 import { createSearchSong } from '../../services/song';
 import { mapMutations, mapActions } from 'vuex';
+import { playlistMixin } from '../../utils/mixins';
 
 export default {
+  mixins: [
+    playlistMixin
+  ],
   components: {
     SearchBox,
     Scroll,
@@ -148,6 +153,8 @@ export default {
           this.songs = songs.data.result.songs.map(song => {
             return createSearchSong(song);
           });
+
+          this.appendBottm();
 
           this.searching = false;
         }, 500);
@@ -271,6 +278,7 @@ export default {
         display: flex
         align-items: center
         font-size: 15px
+        height: 48px
         border-1px()
         .img
           border-radius: 4px

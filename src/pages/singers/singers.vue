@@ -175,7 +175,7 @@ export default {
 
         this.$nextTick(() => {
           this.calculateHeight();
-          this.appendBottm(this.playlist);
+          this.appendBottm();
         });
       }
     }
