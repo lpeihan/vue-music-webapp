@@ -34,6 +34,9 @@
 
       <scroll class="search-result" v-show="searching || songs.length || singers.length || musicList.length"
         :data="songs"
+        :probe-type="3"
+        :listen-scroll="true"
+        @scroll="onScroll"
         ref="scroll"
       >
         <ul>
@@ -51,9 +54,14 @@
             <p class="name">{{song.name}}</p>
             <p class="singer-name">{{song.singer}} <span v-if="song.alias">- {{song.alias}}</span></p>
           </li>
+
+          <li class="loading-container" v-show="searching && songs.length">
+            <loading title=""></loading>
+          </li>
+
         </ul>
         <div class="loading-wrapper">
-          <loading v-show="searching"></loading>
+          <loading v-show="searching && !songs.length"></loading>
         </div>
       </scroll>
 
@@ -132,6 +140,30 @@ export default {
     },
     onSearch(query) {
       this.search(query);
+    },
+    onScroll(pos, maxScrollY) {
+      if (pos.y <= maxScrollY && !this.searching) {
+        this.searchMore();
+      }
+    },
+    async searchMore() {
+      try {
+        this.searching = true;
+
+        const res = await getSearchSongs(this.query, this.songs.length);
+
+        const songs = res.data.result.songs.map(song => {
+          return createSearchSong(song);
+        });
+
+        setTimeout(() => {
+          this.songs = this.songs.concat(songs);
+          this.searching = false;
+        }, 500);
+      } catch (err) {
+        this.searching = false;
+        console.log(err);
+      }
     },
     async search(query) {
       try {
@@ -273,6 +305,8 @@ export default {
       background: $color-background
       padding: 0 15px
       overflow: hidden
+      ul
+        padding-bottom: 50px
       .singer, .musicList
         padding: 8px 0
         display: flex
@@ -294,7 +328,11 @@ export default {
           margin-top: 8px
           color: $color-text-l
           font-size: $font-size-small
-
+      .loading-container
+        height: 60px
+        display: flex
+        justify-content: center
+        align-items: center
       .loading-wrapper
         absolute: top 50% left 50%
         transform: translate3d(-50%, -50%, 0)

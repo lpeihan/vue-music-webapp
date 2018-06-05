@@ -49,7 +49,7 @@ export default {
       if (this.listenScroll) {
         const that = this;
         this.scroll.on('scroll', (pos) => {
-          that.$emit('scroll', pos);
+          that.$emit('scroll', pos, that.scroll.maxScrollY);
         });
       }
     },
