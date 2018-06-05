@@ -36,17 +36,17 @@
         ref="scroll"
       >
         <ul>
-          <li v-if="singers.length && songs.length" class="singer">
+          <li v-if="singers.length && songs.length" class="singer" @click="selectSinger(singers[0])">
             <img :src="singers[0].img1v1Url" alt="" width="48" class="img">
             <span class="name">歌手：{{singers[0].name}}</span>
           </li>
 
-          <li v-if="musicList.length && songs.length" class="musicList">
+          <li v-if="musicList.length && songs.length" class="musicList" @click="selectMusicList(musicList[0])">
             <img :src="musicList[0].coverImgUrl" alt="" width="48" class="img">
             <span class="name">歌单：{{musicList[0].name}}</span>
           </li>
 
-          <li v-for="song in songs" :key="song.id" class="song">
+          <li v-for="song in songs" :key="song.id" class="song" @click="selectSong(song)">
             <p class="name">{{song.name}}</p>
             <p class="singer-name">{{song.singer}} <span v-if="song.alias">- {{song.alias}}</span></p>
           </li>
@@ -55,6 +55,8 @@
           <loading v-show="searching"></loading>
         </div>
       </scroll>
+
+      <router-view></router-view>
     </div>
   </transition>
 </template>
@@ -66,11 +68,13 @@ import {
   getSearchSuggest,
   getSearchSinger,
   getSearchSongs,
-  getSearchMusicList
+  getSearchMusicList,
+  getSongDetail
 } from '../../api/search';
 import Scroll from '../../components/scroll';
 import Loading from '../../components/loading';
 import { createSearchSong } from '../../services/song';
+import { mapMutations, mapActions } from 'vuex';
 
 export default {
   components: {
@@ -91,6 +95,33 @@ export default {
     };
   },
   methods: {
+    ...mapMutations({
+      setSinger: 'SET_SINGER',
+      setMusicList: 'SET_MUSIC_LIST'
+    }),
+    ...mapActions(['insertSong']),
+    async selectSong(song) {
+      getSongDetail(song.id).then((res) => {
+        song.image = res.data.songs[0].al.picUrl;
+        this.insertSong(song);
+      });
+    },
+    selectSinger(singer) {
+      this.setSinger({
+        id: singer.id,
+        name: singer.name,
+        avatar: singer.img1v1Url,
+        alias: singer.alias[0]
+      });
+
+      this.$router.push(`/search/singers/${singer.id}`);
+    },
+    selectMusicList(musicList) {
+      musicList.picUrl = musicList.coverImgUrl;
+      this.setMusicList(musicList);
+
+      this.$router.push(`/search/recommends/${musicList.id}`);
+    },
     onFocusChange(value) {
       this.isFocus = value;
     },

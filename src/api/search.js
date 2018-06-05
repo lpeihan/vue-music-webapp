@@ -20,3 +20,7 @@ export function getSearchSongs(keywords, offset = 0, limit = 30) {
 export function getSearchMusicList(keywords) {
   return axios.get(host + `/search?keywords=${keywords}&type=1000&limit=1`);
 }
+
+export function getSongDetail (id) {
+  return axios.get(host + `/song/detail?ids=${id}`);
+}

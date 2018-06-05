@@ -40,6 +40,20 @@ const actions = {
     commit(types.SET_SEQUENCE_LIST, []);
     commit(types.SET_CURRENT_INDEX, -1);
     commit(types.SET_PLAYING, false);
+  },
+
+  insertSong({ commit, state }, song) {
+    const playlist = state.playlist.slice();
+    const sequenceList = state.sequenceList.slice();
+
+    playlist.unshift(song);
+    sequenceList.unshift(song);
+
+    commit(types.SET_PLAYLIST, playlist);
+    commit(types.SET_SEQUENCE_LIST, sequenceList);
+    commit(types.SET_CURRENT_INDEX, 0);
+    commit(types.SET_FULL_SCREEN, true);
+    commit(types.SET_PLAYING, true);
   }
 };
 

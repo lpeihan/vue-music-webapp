@@ -3,9 +3,9 @@ import { mode } from '../services/config';
 const state = {
   musicList: {},
 
-  playlist: {},
+  playlist: [],
 
-  sequenceList: {},
+  sequenceList: [],
 
   currentIndex: -1,
 

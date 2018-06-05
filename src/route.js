@@ -28,7 +28,17 @@ export default new Router({
     {
       path: '/search',
       name: 'search',
-      component: Search
+      component: Search,
+      children: [
+        {
+          path: 'singers/:id',
+          component: SingerDetail
+        },
+        {
+          path: 'recommends/:id',
+          component: RecommendDetail
+        }
+      ]
     }
   ]
 });

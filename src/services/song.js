@@ -33,6 +33,7 @@ export function createSearchSong(song) {
     id: song.id,
     name: song.name,
     singer: singerName(song.artists),
-    alias: song.alias ? song.alias[0] : ''
+    alias: song.alias ? song.alias[0] : '',
+    image: song.artists[0].img1v1Url
   });
 }
