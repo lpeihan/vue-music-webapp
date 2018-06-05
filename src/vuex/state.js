@@ -19,7 +19,9 @@ const state = {
 
   singer: {},
 
-  topList: {}
+  topList: {},
+
+  searchHistory: []
 };
 
 export default state;

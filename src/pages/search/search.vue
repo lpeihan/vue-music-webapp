@@ -83,7 +83,7 @@ import {
 import Scroll from '../../components/scroll';
 import Loading from '../../components/loading';
 import { createSearchSong } from '../../services/song';
-import { mapMutations, mapActions } from 'vuex';
+import { mapMutations, mapActions, mapGetters } from 'vuex';
 import { playlistMixin } from '../../utils/mixins';
 
 export default {
@@ -107,10 +107,14 @@ export default {
       musicList: []
     };
   },
+  computed: {
+    ...mapGetters(['searchHistory'])
+  },
   methods: {
     ...mapMutations({
       setSinger: 'SET_SINGER',
-      setMusicList: 'SET_MUSIC_LIST'
+      setMusicList: 'SET_MUSIC_LIST',
+      setSearchHistory: 'SET_SEARCH_HISTORY'
     }),
     ...mapActions(['insertSong']),
     async selectSong(song) {
@@ -165,6 +169,19 @@ export default {
         console.log(err);
       }
     },
+    saveSearchhistory(history) {
+      const searchs = this.searchHistory.slice();
+
+      const index = searchs.findIndex(item => item === history);
+
+      if (index > -1) {
+        searchs.splice(index, 1);
+      }
+
+      searchs.unshift(history);
+
+      this.setSearchHistory(searchs);
+    },
     async search(query) {
       try {
         this.searching = true;
@@ -172,6 +189,7 @@ export default {
         this.musicList = [];
         this.songs = [];
         this.$refs.searchBox.changeQuery(query);
+        this.saveSearchhistory(query);
 
         const [ singers, songs, musicList ] = await Promise.all([
           getSearchSinger(query),
@@ -182,7 +200,7 @@ export default {
         setTimeout(() => {
           this.singers = singers.data.result.artists || [];
           this.musicList = musicList.data.result.playlists || [];
-          this.songs = songs.data.result.songs.map(song => {
+          this.songs = (songs.data.result.songs || []).map(song => {
             return createSearchSong(song);
           });
 

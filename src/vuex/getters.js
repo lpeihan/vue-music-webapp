@@ -19,7 +19,9 @@ const getters = {
 
   singer: state => state.singer,
 
-  topList: state => state.topList
+  topList: state => state.topList,
+
+  searchHistory: state => state.searchHistory
 };
 
 export default getters;
