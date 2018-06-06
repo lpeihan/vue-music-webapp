@@ -39,7 +39,7 @@
         <ul class="suggests" v-show="suggests.length && isFocus">
           <li class="title suggest" @click="search(query)">搜索 "{{query}}"</li>
           <li class="suggest" v-for="(suggest, index) in suggests" :key="index" @click="search(suggest.name)">
-            <span class="name">{{suggest.name}}</span>
+            <icon name="search"></icon><span class="name">{{suggest.name}}</span>
           </li>
         </ul>
       </transition>
@@ -52,6 +52,7 @@
         ref="scroll"
       >
         <ul>
+          <li class="title" v-show="singers.length && songs.length">你可能感兴趣</li>
           <li v-if="singers.length && songs.length" class="singer" @click="selectSinger(singers[0])">
             <img :src="singers[0].img1v1Url" alt="" width="48" class="img">
             <span class="name">歌手：{{singers[0].name}}</span>
@@ -372,6 +373,11 @@ export default {
         color: $color-text
         border-1px($color-border)
 
+        .icon
+          color: rgba(0, 0, 0, 0.3)
+          font-size: $font-size-large
+          margin-right: 2px
+
       .title
         color: #337ab7
 
@@ -383,6 +389,11 @@ export default {
       overflow: hidden
       ul
         padding-bottom: 50px
+      .title
+        margin-top: 10px
+        line-height: 24px
+        color: $color-text-l
+        font-size: $font-size-medium
       .singer, .musicList
         padding: 8px 0
         display: flex
