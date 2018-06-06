@@ -20,7 +20,7 @@
             >
             </div>
           </div>
-          <scroll class="lyric-wrapper" v-show="showLyric" ref="lyricWrapper">
+          <scroll class="lyric-wrapper" v-show="showLyric" ref="lyricWrapper" :data="lyric.lines">
             <div>
               <p
                 v-for="(line, index) in lyric.lines" :key="index"  class="line" ref="line"
@@ -33,6 +33,21 @@
         </div>
 
         <div class="bottom">
+          <div class="top-btns">
+            <div>
+              <icon name="favorite"></icon>
+            </div>
+            <div>
+              <icon name="download"></icon>
+            </div>
+            <div class="comment">
+              <div class="count">199+</div>
+              <icon name="comment"></icon>
+            </div>
+            <div>
+              <icon name="more"></icon>
+            </div>
+          </div>
           <div class="progress-wrapper">
             <div class="current-time">{{currentTime | time}}</div>
             <div class="progress-bar-wrapper">
@@ -83,6 +98,7 @@
     <audio
       ref="audio" :src="url" autoplay="autoplay"
       @timeupdate="updateTime"
+      @canplay="ready"
       @ended="ended">
     </audio>
   </div>
@@ -161,7 +177,7 @@ export default {
         const lyric = (await getLyric(id)).data.lrc.lyric;
         this.lyric = new LyricParser(lyric, this.handleLyric);
 
-        this.playing && this.lyric.play();
+        this.playing && this.url && this.lyric.play();
       } catch (err) {
         console.log(err);
       }
@@ -208,6 +224,9 @@ export default {
       } else {
         this.next();
       }
+    },
+    ready() {
+      this.lyric && this.lyric.play();
     },
     close() {
       if (location.hash.indexOf('full-screen') === -1) {
@@ -299,11 +318,11 @@ export default {
       });
     },
     getPosAndScale() {
-      const width = innerWidth * 0.7;
+      const width = (innerWidth * 0.7) + 8;
 
       return {
         x: -(innerWidth / 2 - 40),
-        y: innerHeight - 150 - width / 2 - 30,
+        y: innerHeight - 120 - width / 2 - 30,
         scale: 40 / width
       };
     }
@@ -415,7 +434,7 @@ export default {
           margin: 0 50px
 
       .middle
-        absolute: top 120px left 0 right 0 bottom 170px
+        absolute: top 120px left 0 right 0 bottom 200px
         display: flex
         justify-content: center
 
@@ -449,11 +468,31 @@ export default {
 
           .line
             line-height: 36px
+            padding: 0 10px
             &.active
               color: $white
 
       .bottom
-        absolute: bottom 44px left 0 right 0
+        absolute: bottom 30px left 0 right 0
+
+        .top-btns
+          display: flex
+          padding: 0 20%
+          justify-content: space-between
+          align-items: center
+          .icon
+            color: rgba($white, 0.7)
+            font-size: 22px
+          .comment
+            position: relative
+
+            .icon
+              font-size: 24px
+
+            .count
+              absolute: top 1px left 16px
+              font-size: 10px
+              color: rgba($white, 0.7)
 
         .progress-wrapper
           padding: 0 10%

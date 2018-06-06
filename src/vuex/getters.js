@@ -21,7 +21,11 @@ const getters = {
 
   topList: state => state.topList,
 
-  searchHistory: state => state.searchHistory
+  searchHistory: state => state.searchHistory,
+
+  favoriteList: state => state.favoriteList,
+
+  playHistory: state => state.playHistory
 };
 
 export default getters;

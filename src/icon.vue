@@ -38,7 +38,11 @@ export default {
         delete: require('./assets/icons/delete.svg'),
         clear: require('./assets/icons/clear.svg'),
         volume: require('./assets/icons/volume.svg'),
-        clock: require('./assets/icons/clock.svg')
+        clock: require('./assets/icons/clock.svg'),
+        download: require('./assets/icons/download.svg'),
+        favorite: require('./assets/icons/favorite.svg'),
+        unfavorite: require('./assets/icons/unfavorite.svg'),
+        comment: require('./assets/icons/comment.svg')
       }
     };
   }

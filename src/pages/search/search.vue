@@ -96,7 +96,6 @@ import {
 import Scroll from '../../components/scroll';
 import Loading from '../../components/loading';
 import { createSearchSong } from '../../services/song';
-import { saveSearchHistoryToStorage } from '../../services/search';
 import { mapMutations, mapActions, mapGetters } from 'vuex';
 import { playlistMixin } from '../../utils/mixins';
 
@@ -127,10 +126,14 @@ export default {
   methods: {
     ...mapMutations({
       setSinger: 'SET_SINGER',
-      setMusicList: 'SET_MUSIC_LIST',
-      setSearchHistory: 'SET_SEARCH_HISTORY'
+      setMusicList: 'SET_MUSIC_LIST'
     }),
-    ...mapActions(['insertSong']),
+    ...mapActions([
+      'insertSong',
+      'saveSearchHistory',
+      'deleteSearchHitory',
+      'clearSearchHistory'
+    ]),
     async selectSong(song) {
       getSongDetail(song.id).then((res) => {
         song.image = res.data.songs[0].al.picUrl;
@@ -182,35 +185,6 @@ export default {
         this.searching = false;
         console.log(err);
       }
-    },
-    saveSearchHistory(history) {
-      const searchs = this.searchHistory.slice();
-
-      const index = searchs.findIndex(item => item === history);
-
-      if (index > -1) {
-        searchs.splice(index, 1);
-      }
-
-      searchs.unshift(history);
-
-      if (searchs.length > 10) {
-        searchs.pop();
-      }
-
-      this.setSearchHistory(searchs);
-      saveSearchHistoryToStorage(searchs);
-    },
-    deleteSearchHitory(index) {
-      const searchs = this.searchHistory.slice();
-
-      searchs.splice(index, 1);
-      this.setSearchHistory(searchs);
-      saveSearchHistoryToStorage(searchs);
-    },
-    clearSearchHistory() {
-      this.setSearchHistory([]);
-      saveSearchHistoryToStorage([]);
     },
     resetSearch() {
       this.singers = [];

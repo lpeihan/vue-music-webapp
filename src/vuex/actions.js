@@ -1,4 +1,5 @@
 import * as types from './mutation-types';
+import { cacheSearchHistory, cacheFavoriteList, cachePlayHistory } from '../services/cache';
 
 const actions = {
   selectPlay({ commit, state }, { list, index }) {
@@ -14,7 +15,7 @@ const actions = {
     const sequenceList = state.sequenceList.slice();
     let currentIndex = state.currentIndex;
 
-    if (playlist.length === 1) { // 如果歌曲长度为一，则清空播放列表
+    if (playlist.length === 1) {
       dispatch('clearPlaylist');
       return;
     }
@@ -64,6 +65,48 @@ const actions = {
     commit(types.SET_CURRENT_INDEX, index);
     commit(types.SET_FULL_SCREEN, true);
     commit(types.SET_PLAYING, true);
+  },
+
+  saveSearchHistory({ commit, state }, query) {
+    const searchHistory = state.searchHistory.slice();
+
+    const index = searchHistory.findIndex(item => item === query);
+
+    if (index > -1) {
+      searchHistory.splice(index, 1);
+    }
+
+    searchHistory.unshift(query);
+
+    if (searchHistory.length > 10) {
+      searchHistory.pop();
+    }
+
+    cacheSearchHistory(searchHistory);
+
+    commit(types.SET_SEARCH_HISTORY, searchHistory);
+  },
+
+  deleteSearchHitory({ commit, state }, index) {
+    const searchHistory = state.searchHistory.slice();
+
+    searchHistory.splice(index, 1);
+
+    cacheSearchHistory(searchHistory);
+    commit(types.SET_SEARCH_HISTORY, searchHistory);
+  },
+
+  clearSearchHistory({ commit }) {
+    cacheSearchHistory([]);
+    commit(types.SET_SEARCH_HISTORY, []);
+  },
+
+  setFavoriteListAction({ commit }, list) {
+    commit(types.SET_SEARCH_HISTORY, cacheFavoriteList(list));
+  },
+
+  setPlayHistoryAction({ commit }, history) {
+    commit(types.SET_SEARCH_HISTORY, cachePlayHistory(history));
   }
 };
 

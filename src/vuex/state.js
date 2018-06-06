@@ -1,5 +1,5 @@
 import { mode } from '../services/config';
-import { getSearchHistoryFromStorage } from '../services/search';
+import { loadSearchHistory, loadFavoriteList, loadPlayHistory } from '../services/cache';
 
 const state = {
   musicList: {},
@@ -22,7 +22,11 @@ const state = {
 
   topList: {},
 
-  searchHistory: getSearchHistoryFromStorage() || []
+  searchHistory: loadSearchHistory() || [],
+
+  favoriteList: loadFavoriteList() || [],
+
+  playHistory: loadPlayHistory() || []
 };
 
 export default state;
