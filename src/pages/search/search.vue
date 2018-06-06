@@ -96,6 +96,7 @@ import {
 import Scroll from '../../components/scroll';
 import Loading from '../../components/loading';
 import { createSearchSong } from '../../services/song';
+import { saveSearchHistoryToStorage } from '../../services/search';
 import { mapMutations, mapActions, mapGetters } from 'vuex';
 import { playlistMixin } from '../../utils/mixins';
 
@@ -198,15 +199,18 @@ export default {
       }
 
       this.setSearchHistory(searchs);
+      saveSearchHistoryToStorage(searchs);
     },
     deleteSearchHitory(index) {
       const searchs = this.searchHistory.slice();
 
       searchs.splice(index, 1);
       this.setSearchHistory(searchs);
+      saveSearchHistoryToStorage(searchs);
     },
     clearSearchHistory() {
       this.setSearchHistory([]);
+      saveSearchHistoryToStorage([]);
     },
     resetSearch() {
       this.singers = [];
@@ -388,7 +392,7 @@ export default {
       padding: 0 15px
       overflow: hidden
       ul
-        padding-bottom: 50px
+        padding-bottom: 60px
       .title
         margin-top: 10px
         line-height: 24px

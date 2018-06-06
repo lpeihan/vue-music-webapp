@@ -1,4 +1,5 @@
 import { mode } from '../services/config';
+import { getSearchHistoryFromStorage } from '../services/search';
 
 const state = {
   musicList: {},
@@ -21,7 +22,7 @@ const state = {
 
   topList: {},
 
-  searchHistory: []
+  searchHistory: getSearchHistoryFromStorage() || []
 };
 
 export default state;
