@@ -4,6 +4,7 @@ import RecommendDetail from './pages/recommends/recommend-detail';
 import SingerDetail from './pages/singers/singer-detail';
 import TopListDetail from './pages/top-list/top-list-detail';
 import Search from './pages/search/search';
+import User from './pages/user/user';
 
 Vue.use(Router);
 
@@ -39,6 +40,11 @@ export default new Router({
           component: RecommendDetail
         }
       ]
+    },
+    {
+      path: '/user',
+      name: 'user',
+      component: User
     }
   ]
 });

@@ -33,9 +33,9 @@
         </div>
 
         <div class="bottom">
-          <div class="top-btns">
-            <div>
-              <icon name="favorite"></icon>
+          <div class="top-btns" v-show="!showLyric">
+            <div @click="toggleFavorite(currentSong)" :class="{ 'favorite': isFavorite }">
+              <icon :name="isFavorite ? 'favorite' : 'unfavorite'"></icon>
             </div>
             <div>
               <icon name="download"></icon>
@@ -106,7 +106,7 @@
 
 <script>
 import animations from 'create-keyframe-animation';
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 import { getSong, getLyric } from '../../api/song';
 import ProgressBar from '../../components/progress-bar';
 import { leftpad, shuffle } from '../../utils';
@@ -136,7 +136,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'fullScreen', 'currentSong', 'playlist', 'playing', 'currentIndex', 'mode', 'sequenceList'
+      'fullScreen', 'currentSong', 'playlist', 'playing', 'currentIndex', 'mode', 'sequenceList', 'favoriteList'
     ]),
     cdCls() {
       return this.playing ? 'play' : 'play pause';
@@ -149,6 +149,11 @@ export default {
     },
     modeText() {
       return this.modeName === 'loop' ? '循环播放' : this.modeName === 'random' ? '随机播放' : '单曲循环';
+    },
+    isFavorite() {
+      const index = this.favoriteList.findIndex(item => item.id === this.currentSong.id);
+
+      return index > -1;
     }
   },
   filters: {
@@ -165,6 +170,11 @@ export default {
       setMode: 'SET_MODE',
       setPlaylist: 'SET_PLAYLIST'
     }),
+    ...mapActions([
+      'savePlayHistory',
+      'saveFavoriteList',
+      'deleteFavoriteList'
+    ]),
     async getSong(id) {
       try {
         this.url = (await getSong(id)).data.data[0].url;
@@ -193,6 +203,13 @@ export default {
       }
 
       this.playingLyric = txt;
+    },
+    toggleFavorite(song) {
+      if (this.isFavorite) {
+        this.deleteFavoriteList(song);
+      } else {
+        this.saveFavoriteList(song);
+      }
     },
     togglePlaying() {
       this.setPlaying(!this.playing);
@@ -332,6 +349,8 @@ export default {
       if (newSong.id === oldSong.id) {
         return;
       }
+
+      this.savePlayHistory(newSong);
 
       this.currentTime = 0;
       this.duration = 0;
@@ -480,6 +499,9 @@ export default {
           padding: 0 20%
           justify-content: space-between
           align-items: center
+          .favorite
+            .icon
+              color: $color-theme
           .icon
             color: rgba($white, 0.7)
             font-size: 22px

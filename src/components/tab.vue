@@ -1,6 +1,6 @@
 <template>
   <div class="tab">
-    <div class="tab-titles">
+    <div class="tab-titles" ref="title">
       <div class="title" v-for="(tab, index) in tabs" :key="index" @click="go(index)">
         <span :class="{ 'active': index === tabIndex }">{{tab}}</span>
       </div>
@@ -9,7 +9,7 @@
         :style="{
           'width': (100 / tabs.length) + '%',
           'transition-duration': touching ? '0ms' : '400ms',
-          'transform': `translate3d(${((tabIndex - translateX / width) / tabs.length) * width}px, 0, 0)`
+          'transform': `translate3d(${((tabIndex - translateX / titleWidth) / tabs.length) * titleWidth}px, 0, 0)`
         }"
       ></div>
     </div>
@@ -47,6 +47,7 @@ export default {
   data() {
     return {
       width: 0,
+      titleWidth: 0,
       startX: 0,
       startY: 0,
       endX: 0,
@@ -69,6 +70,8 @@ export default {
       this.touching = true;
       this.startX = e.touches[0].pageX;
       this.startY = e.touches[0].pageY;
+      this.endX = e.touches[0].pageX;
+      this.endY = e.touches[0].pageY;
     },
     handleTouchmove(e) {
       this.endX = e.touches[0].pageX;
@@ -98,6 +101,7 @@ export default {
   },
   mounted() {
     this.width = this.$refs.wrap.clientWidth;
+    this.titleWidth = this.$refs.title.clientWidth;
   }
 };
 </script>

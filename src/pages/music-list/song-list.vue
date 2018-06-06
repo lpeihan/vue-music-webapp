@@ -1,11 +1,11 @@
 <template>
   <div class="song-list">
-    <div class="title" v-show="songs.length" @click="select(songs[0], 0)">
+    <div class="title" v-show="songs.length" @click.stop="select(songs[0], 0)">
       <icon name="play"></icon>
       <span class="play-all">播放全部</span>
       <span class="count">({{songs.length}}首)</span>
     </div>
-    <div class="song" v-for="(song, index) in songs" :key="index" @click="select(song, index)">
+    <div class="song" v-for="(song, index) in songs" :key="index" @click.stop="select(song, index)">
       <div class="number">{{index + 1}}</div>
       <p class="name">{{song.name}}</p>
       <p class="singer">{{song.singer}} - {{song.desc}}</p>

@@ -82,9 +82,7 @@ const actions = {
       searchHistory.pop();
     }
 
-    cacheSearchHistory(searchHistory);
-
-    commit(types.SET_SEARCH_HISTORY, searchHistory);
+    commit(types.SET_SEARCH_HISTORY, cacheSearchHistory(searchHistory));
   },
 
   deleteSearchHitory({ commit, state }, index) {
@@ -92,21 +90,56 @@ const actions = {
 
     searchHistory.splice(index, 1);
 
-    cacheSearchHistory(searchHistory);
-    commit(types.SET_SEARCH_HISTORY, searchHistory);
+    commit(types.SET_SEARCH_HISTORY, cacheSearchHistory(searchHistory));
   },
 
   clearSearchHistory({ commit }) {
-    cacheSearchHistory([]);
-    commit(types.SET_SEARCH_HISTORY, []);
+    commit(types.SET_SEARCH_HISTORY, cacheSearchHistory([]));
   },
 
-  setFavoriteListAction({ commit }, list) {
-    commit(types.SET_SEARCH_HISTORY, cacheFavoriteList(list));
+  saveFavoriteList({ commit, state }, song) {
+    const favoriteList = state.favoriteList.slice();
+
+    const index = favoriteList.findIndex(item => item.id === song.id);
+
+    if (index > -1) {
+      favoriteList.splice(index, 1);
+    }
+
+    favoriteList.unshift(song);
+
+    if (favoriteList.length > 100) {
+      favoriteList.pop();
+    }
+
+    commit(types.SET_FAVORITE_LIST, cacheFavoriteList(favoriteList));
   },
 
-  setPlayHistoryAction({ commit }, history) {
-    commit(types.SET_SEARCH_HISTORY, cachePlayHistory(history));
+  deleteFavoriteList({ commit, state }, song) {
+    const favoriteList = state.favoriteList.slice();
+
+    const index = favoriteList.findIndex(item => song.id === item.id);
+
+    favoriteList.splice(index, 1);
+    commit(types.SET_FAVORITE_LIST, cacheFavoriteList(favoriteList));
+  },
+
+  savePlayHistory({ commit, state }, song) {
+    const playHistory = state.playHistory.slice();
+
+    const index = playHistory.findIndex(item => item.id === song.id);
+
+    if (index > -1) {
+      playHistory.splice(index, 1);
+    }
+
+    playHistory.unshift(song);
+
+    if (playHistory.length > 100) {
+      playHistory.pop();
+    }
+
+    commit(types.SET_PLAY_HISTORY, cachePlayHistory(playHistory));
   }
 };
 
