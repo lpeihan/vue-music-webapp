@@ -8,8 +8,7 @@ const PLAYLIST = 'playlist';
 export const playlistMixin = {
   computed: {
     ...mapGetters([
-      'playlist',
-      'tabIndex'
+      'playlist'
     ])
   },
   methods: {

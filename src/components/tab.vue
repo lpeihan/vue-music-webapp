@@ -32,17 +32,16 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
-
 export default {
   props: {
     tabs: {
       type: Array,
       default: () => []
+    },
+    tabIndex: {
+      type: Number,
+      default: 0
     }
-  },
-  computed: {
-    ...mapGetters(['tabIndex'])
   },
   data() {
     return {
@@ -57,11 +56,8 @@ export default {
     };
   },
   methods: {
-    ...mapMutations({
-      setTabIndex: 'SET_TAB_INDEX'
-    }),
     go(index) {
-      this.setTabIndex(index);
+      this.$emit('update:tabIndex', index);
     },
     getAngle(startX, startY, endX, endY) {
       return 360 * Math.atan((endY - startY) / (endX - startX)) / (2 * Math.PI);
@@ -93,9 +89,9 @@ export default {
       this.translateX = 0;
 
       if (percent < -0.3 && this.tabIndex < this.tabs.length - 1) {
-        this.setTabIndex(this.tabIndex + 1);
+        this.$emit('update:tabIndex', this.tabIndex + 1);
       } else if (percent > 0.3 && this.tabIndex > 0) {
-        this.setTabIndex(this.tabIndex - 1);
+        this.$emit('update:tabIndex', this.tabIndex - 1);
       }
     }
   },

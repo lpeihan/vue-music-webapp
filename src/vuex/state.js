@@ -16,8 +16,6 @@ const state = {
 
   mode: mode.loop,
 
-  tabIndex: 0,
-
   singer: {},
 
   topList: {},

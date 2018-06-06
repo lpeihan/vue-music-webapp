@@ -29,10 +29,6 @@ const mutations = {
     state.mode = mode;
   },
 
-  [types.SET_TAB_INDEX](state, index) {
-    state.tabIndex = index;
-  },
-
   [types.SET_SINGER](state, singer) {
     state.singer = singer;
   },

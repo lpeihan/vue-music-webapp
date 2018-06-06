@@ -40,7 +40,7 @@
 
 <script>
 import { getSingers } from '../../api/singers';
-import { mapGetters, mapMutations } from 'vuex';
+import { mapMutations } from 'vuex';
 import Scroll from '../../components/scroll';
 import Loading from '../../components/loading';
 import pinyin from 'pinyin';
@@ -54,6 +54,12 @@ export default {
     Scroll,
     Loading
   },
+  props: {
+    tabIndex: {
+      type: Number,
+      default: 0
+    }
+  },
   data() {
     return {
       singers: [],
@@ -61,9 +67,6 @@ export default {
       listHeight: [],
       startY: 0
     };
-  },
-  computed: {
-    ...mapGetters(['tabIndex'])
   },
   methods: {
     ...mapMutations({

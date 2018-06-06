@@ -22,7 +22,7 @@
 
 <script>
 import { getTopList } from '../../api/top-list';
-import { mapGetters, mapMutations } from 'vuex';
+import { mapMutations } from 'vuex';
 import Scroll from '../../components/scroll';
 import Loading from '../../components/loading';
 import { playlistMixin } from '../../utils/mixins';
@@ -35,13 +35,16 @@ export default {
     Scroll,
     Loading
   },
+  props: {
+    tabIndex: {
+      type: Number,
+      default: 0
+    }
+  },
   data() {
     return {
       tops: []
     };
-  },
-  computed: {
-    ...mapGetters(['tabIndex'])
   },
   methods: {
     ...mapMutations({

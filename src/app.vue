@@ -2,11 +2,15 @@
   <div id="app">
     <headers></headers>
 
-    <tab :style="{ 'height': height + 'px' }" :tabs="tabs">
+    <tab :style="{ 'height': height + 'px' }" :tabs="tabs" :tab-index.sync="tabIndex">
       <recommends></recommends>
-      <top-list></top-list>
-      <singers></singers>
+      <top-list :tab-index="tabIndex"></top-list>
+      <singers :tab-index="tabIndex"></singers>
     </tab>
+
+    <div ref="test1">1</div>
+    <div ref="test1">1</div>
+    <div ref="test2">2</div>
 
     <player></player>
     <router-view></router-view>
@@ -33,7 +37,8 @@ export default {
   data() {
     return {
       height: 0,
-      tabs: ['推荐', '排行', '歌手']
+      tabs: ['推荐', '排行', '歌手'],
+      tabIndex: 0
     };
   },
   mounted() {
