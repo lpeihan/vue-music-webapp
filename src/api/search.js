@@ -13,7 +13,7 @@ export function getSearchSinger(keywords) {
   return axios.get(host + `/search?keywords=${keywords}&type=100&limit=1`);
 }
 
-export function getSearchSongs(keywords, offset = 0, limit = 30) {
+export function getSearchSongs(keywords, offset = 0, limit = 20) {
   return axios.get(host + `/search?keywords=${keywords}&offset=${offset}&limit=${limit}`);
 }
 
