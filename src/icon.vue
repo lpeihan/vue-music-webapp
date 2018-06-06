@@ -37,7 +37,8 @@ export default {
         loop: require('./assets/icons/loop.svg'),
         delete: require('./assets/icons/delete.svg'),
         clear: require('./assets/icons/clear.svg'),
-        volume: require('./assets/icons/volume.svg')
+        volume: require('./assets/icons/volume.svg'),
+        clock: require('./assets/icons/clock.svg')
       }
     };
   }

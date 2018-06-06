@@ -11,6 +11,7 @@
       @focus="isFocus = true"
       v-model="query"
     >
+    <div class="clear" @click.stop="query = ''" v-show="query"><icon name="delete"></icon></div>
   </form>
 </template>
 
@@ -69,6 +70,11 @@ export default {
       .icon
         font-size: 28px
 
+    .clear
+      absolute: right 16px top 16px
+      .icon
+        font-size: 26px
+        color: rgba($white, .4)
     .input
       flex: 1
       height: 32px

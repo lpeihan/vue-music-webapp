@@ -1,6 +1,6 @@
 <template>
   <transition>
-    <div class="search">
+    <div class="searchs">
       <search-box
         ref="searchBox"
         @query="onQueryChange"
@@ -9,13 +9,25 @@
       >
       </search-box>
 
-      <scroll class="scroll-wrapper" ref="scrollPrev">
+      <scroll class="scroll-wrapper" ref="scrollPrev" :data="hots.concat(searchHistory)">
         <div>
           <div class="hots-wrapper">
             <h1 class="title">热门搜索</h1>
             <ul class="hots">
               <li class="hot" v-for="(hot, index) in hots" :key="index" @click="search(hot.first)">
                 {{hot.first}}
+              </li>
+            </ul>
+          </div>
+
+          <div class="history-wrapper" v-if="searchHistory.length">
+            <h1 class="title">搜索历史
+              <span class="clear" @click="clearSearchHistory"><icon name="clear"></icon></span>
+            </h1>
+            <ul>
+              <li v-for="(history, index) in searchHistory" :key="index" class="item" @click="search(history)">
+                <div class="text"><icon name="clock"></icon>{{history}}</div>
+                <div class="delete" @click.stop="deleteSearchHitory(index)"><icon name="delete"></icon></div>
               </li>
             </ul>
           </div>
@@ -169,7 +181,7 @@ export default {
         console.log(err);
       }
     },
-    saveSearchhistory(history) {
+    saveSearchHistory(history) {
       const searchs = this.searchHistory.slice();
 
       const index = searchs.findIndex(item => item === history);
@@ -180,16 +192,32 @@ export default {
 
       searchs.unshift(history);
 
+      if (searchs.length > 10) {
+        searchs.pop();
+      }
+
       this.setSearchHistory(searchs);
+    },
+    deleteSearchHitory(index) {
+      const searchs = this.searchHistory.slice();
+
+      searchs.splice(index, 1);
+      this.setSearchHistory(searchs);
+    },
+    clearSearchHistory() {
+      this.setSearchHistory([]);
+    },
+    resetSearch() {
+      this.singers = [];
+      this.musicList = [];
+      this.songs = [];
     },
     async search(query) {
       try {
         this.searching = true;
-        this.singers = [];
-        this.musicList = [];
-        this.songs = [];
+        this.resetSearch();
         this.$refs.searchBox.changeQuery(query);
-        this.saveSearchhistory(query);
+        this.saveSearchHistory(query);
 
         const [ singers, songs, musicList ] = await Promise.all([
           getSearchSinger(query),
@@ -224,6 +252,7 @@ export default {
     },
     async onQueryChange(query) {
       try {
+        this.resetSearch();
         if (!query) {
           this.suggests = [];
           return;
@@ -254,11 +283,11 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
   @import "../../styles/variables"
   @import "../../styles/mixins"
 
-  .search
+  .searchs
     fixed: top 0 right 0 bottom 0 left 0
     background: $color-background
     &.v
@@ -288,6 +317,35 @@ export default {
             margin: 0 12px 12px 0
             border-radius: 5px
             font-size: $font-size-medium
+      .history-wrapper
+        margin-top: 10px
+        .title
+          height: 40px
+          display: flex
+          align-items: center
+          font-size: $font-size-medium
+          color: $color-text-l
+          justify-content: space-between
+          .icon
+            font-size: $font-size-medium-x
+        .item
+          height: 40px
+          display: flex
+          align-items: center
+          font-size: $font-size-medium + 1
+          justify-content: space-between
+          .text
+            display: flex
+            line-height: 20px
+            align-items: center
+            .icon
+              font-size: 20px
+              margin-right: 2px
+              color: $color-text-l
+          .delete
+            .icon
+              font-size: $font-size-large
+              color: $color-text-l
 
     .suggests
       absolute: top 55px left 20px right 20px
