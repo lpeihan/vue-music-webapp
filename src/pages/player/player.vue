@@ -41,7 +41,7 @@
               <icon name="download"></icon>
             </div>
             <div class="comment">
-              <div class="count">199+</div>
+              <div class="count">{{totalComments}}+</div>
               <icon name="comment"></icon>
             </div>
             <div>
@@ -107,7 +107,7 @@
 <script>
 import animations from 'create-keyframe-animation';
 import { mapGetters, mapMutations, mapActions } from 'vuex';
-import { getSong, getLyric } from '../../api/song';
+import { getSong, getLyric, getComments } from '../../api/song';
 import ProgressBar from '../../components/progress-bar';
 import { leftpad, shuffle } from '../../utils';
 import LyricParser from 'lyric-parser';
@@ -131,7 +131,8 @@ export default {
       lyric: '',
       showLyric: false,
       currentLineNum: 0,
-      playingLyric: ''
+      playingLyric: '',
+      totalComments: 0
     };
   },
   computed: {
@@ -188,6 +189,17 @@ export default {
         this.lyric = new LyricParser(lyric, this.handleLyric);
 
         this.playing && this.url && this.lyric.play();
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async getComments(id) {
+      try {
+        const res = await getComments(id);
+
+        const total = res.data.total;
+
+        this.totalComments = total > 999 ? 999 : total;
       } catch (err) {
         console.log(err);
       }
@@ -368,6 +380,8 @@ export default {
       ]);
 
       this.setPlaying(true);
+
+      this.getComments(newSong.id);
 
       const timer = setInterval(() => {
         if (this.duration) {
