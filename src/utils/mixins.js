@@ -12,7 +12,7 @@ export const playlistMixin = {
     ])
   },
   methods: {
-    appendBottm(playlist = this.playlist) {
+    appendBottom(playlist = this.playlist) {
       this.$nextTick(() => {
         const el = this.$refs.scroll.$el.children[0];
         const lastChild = el.lastChild;
@@ -33,11 +33,11 @@ export const playlistMixin = {
   },
   watch: {
     playlist(val) {
-      this.appendBottm(val);
+      this.appendBottom(val);
     }
   },
   mounted() {
-    this.appendBottm(this.playlist);
+    this.appendBottom(this.playlist);
   }
 };
 

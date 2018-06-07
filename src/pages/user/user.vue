@@ -6,10 +6,10 @@
         <icon name="back"></icon>
       </div>
       <tab class="users-tab" :tabs="tabs" :tab-index.sync="tabIndex">
-        <scroll class="favorite" :data="favoriteList" ref="scroll">
+        <scroll class="favorite" :data="favoriteList" ref="favorite">
           <song-list :songs="favoriteList" @select="selectFavorite"></song-list>
         </scroll>
-        <scroll class="play-history" :data="playHistory" ref="scroll1">
+        <scroll class="play-history" :data="playHistory" ref="history">
           <song-list :songs="playHistory" @select="selectPlayHistory"></song-list>
         </scroll>
       </tab>
@@ -44,6 +44,18 @@ export default {
   },
   methods: {
     ...mapActions(['selectPlay', 'insertSong']),
+    appendBottom() {
+      if (this.playlist.length) {
+        this.$el.style.height = 'calc(100% - 60px)';
+      } else {
+        this.$el.style.height = '100%';
+      }
+
+      setTimeout(() => {
+        this.$refs.favorite.refresh();
+        this.$refs.history.refresh();
+      });
+    },
     selectPlayHistory(song, index) {
       this.insertSong(song);
     },
