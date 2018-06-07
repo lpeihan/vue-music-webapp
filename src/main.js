@@ -10,6 +10,7 @@ import VConsole from 'vconsole';
 
 import './utils/axios';
 import './utils/directives';
+import './utils/filters';
 import './styles/index.styl';
 
 // const vConsole = new VConsole();

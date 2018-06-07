@@ -5,6 +5,7 @@ import SingerDetail from './pages/singers/singer-detail';
 import TopListDetail from './pages/top-list/top-list-detail';
 import Search from './pages/search/search';
 import User from './pages/user/user';
+import Comments from './pages/comment/comment';
 
 Vue.use(Router);
 
@@ -45,6 +46,11 @@ export default new Router({
       path: '/user',
       name: 'user',
       component: User
+    },
+    {
+      path: '/music/comment/:id/full-screen',
+      name: 'comment',
+      component: Comments
     }
   ]
 });

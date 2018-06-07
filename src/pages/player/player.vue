@@ -40,7 +40,7 @@
             <div>
               <icon name="download"></icon>
             </div>
-            <div class="comment">
+            <div class="comment" @click="$router.push(`/music/comment/${currentSong.id}/full-screen`)">
               <div class="count">{{totalComments}}+</div>
               <icon name="comment"></icon>
             </div>

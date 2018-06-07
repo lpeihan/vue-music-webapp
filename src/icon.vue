@@ -42,7 +42,8 @@ export default {
         download: require('./assets/icons/download.svg'),
         favorite: require('./assets/icons/favorite.svg'),
         unfavorite: require('./assets/icons/unfavorite.svg'),
-        comment: require('./assets/icons/comment.svg')
+        comment: require('./assets/icons/comment.svg'),
+        like: require('./assets/icons/like.svg')
       }
     };
   }

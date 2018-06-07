@@ -9,6 +9,6 @@ export function getLyric (id) {
   return axios.get(host + `/lyric?id=${id}`);
 }
 
-export function getComments(id) {
-  return axios.get(host + `/comment/music?id=${id}`);
+export function getComments(id, offset = 0) {
+  return axios.get(host + `/comment/music?id=${id}&offset=${offset}`);
 }
