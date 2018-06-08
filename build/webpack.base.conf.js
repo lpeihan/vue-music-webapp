@@ -23,7 +23,10 @@ module.exports = {
       {
         test: /\.js$/,
         use: 'babel-loader',
-        exclude: /node_modules/
+        include: [
+          resolve('src'),
+          resolve('node_modules/_pinyin@2.8.3@pinyin')
+        ]
       },
       {
         test: /\.vue$/,
