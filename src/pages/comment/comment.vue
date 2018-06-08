@@ -8,33 +8,35 @@
           <span>({{total}})</span>
         </div>
       </div>
-      <scroll class="comments-content" :data="comments"
-        :probe-type="3"
-        :listen-scroll="true"
-        @scroll="onScroll"
-      >
-        <div>
-          <div class="preview">
-            <img :src="currentSong.image" alt="" width="64" class="img">
-            <div class="text">
-              <p class="name">{{currentSong.name}}</p>
-              <p class="singer">{{currentSong.singer}}</p>
+      <div class="comments-content">
+        <scroll class="" :data="comments"
+          :probe-type="3"
+          :listen-scroll="true"
+          @scroll="onScroll"
+        >
+          <div>
+            <div class="preview">
+              <img :src="currentSong.image" alt="" width="64" class="img">
+              <div class="text">
+                <p class="name">{{currentSong.name}}</p>
+                <p class="singer">{{currentSong.singer}}</p>
+              </div>
+            </div>
+
+            <div class="comments-wrapper">
+              <div class="title">精彩评论</div>
+              <comment-item v-for="(hot, index) in hotComments" :comment="hot" :key="index"></comment-item>
+
+              <div class="title">最新评论</div>
+              <comment-item v-for="comment in comments" :comment="comment" :key="comment.commentId"></comment-item>
+
+              <div class="loading-wrapper">
+                <loading v-show="loading && comments.length"></loading>
+              </div>
             </div>
           </div>
-
-          <div class="comments-wrapper">
-            <div class="title">精彩评论</div>
-            <comment-item v-for="hot in hotComments" :comment="hot" :key="hot.commentId"></comment-item>
-
-            <div class="title">最新评论</div>
-            <comment-item v-for="comment in comments" :comment="comment" :key="comment.commentId"></comment-item>
-
-            <div class="loading-wrapper">
-              <loading v-show="loading && comments.length"></loading>
-            </div>
-          </div>
-        </div>
-      </scroll>
+        </scroll>
+      </div>
 
     </div>
   </transition>
@@ -158,7 +160,7 @@ export default {
         background: rgba(7, 17, 27, .1)
 
     .comments-content
-      height: calc(100% - 50px)
+      fixed: top 50px left 0 right 0 bottom 0
       overflow hidden
       .loading-wrapper
         height: 60px
