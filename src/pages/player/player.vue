@@ -402,6 +402,13 @@ export default {
       if (val) {
         history.pushState({ page: 'full-screen' }, 'full-screen', `${location.href}#full-screen`);
       }
+    },
+    showLyric(val) {
+      if (val) {
+        this.$nextTick(() => {
+          this.$refs.lyricWrapper.refresh();
+        });
+      }
     }
   },
   mounted() {
