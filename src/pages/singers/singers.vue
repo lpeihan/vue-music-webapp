@@ -219,7 +219,7 @@ export default {
           font-size: 15px
 
     .shortcuts
-      absolute: top 0 right 8px
+      absolute: top 0 right 8px bottom 0
       padding: 10% 0 20%
       width: 30px
       text-align: center

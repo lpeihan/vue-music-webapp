@@ -8,10 +8,6 @@
       <singers :tab-index="tabIndex"></singers>
     </tab>
 
-    <div ref="test1">1</div>
-    <div ref="test1">1</div>
-    <div ref="test2">2</div>
-
     <player></player>
     <router-view></router-view>
   </div>
