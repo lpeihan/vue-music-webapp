@@ -8,7 +8,7 @@ module.exports = {
     app: './src/main.js'
   },
   output: {
-    path: resolve('dist/frontend'),
+    path: resolve('dist'),
     filename: assetsPath('js/[name].js'),
     publicPath: '/'
   },

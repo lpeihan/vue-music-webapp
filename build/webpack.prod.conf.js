@@ -75,7 +75,7 @@ module.exports = merge(baseWebpackConf, {
       },
       {
         from: resolve('server.js'),
-        to: '../'
+        to: ''
       }
     ])
   ]

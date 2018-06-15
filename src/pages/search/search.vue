@@ -211,7 +211,7 @@ export default {
             return createSearchSong(song);
           });
 
-          this.appendBottm();
+          this.appendBottom();
 
           this.searching = false;
         }, 500);
