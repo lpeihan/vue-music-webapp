@@ -72,6 +72,10 @@ module.exports = merge(baseWebpackConf, {
       {
         from: resolve('static'),
         to: 'static'
+      },
+      {
+        from: resolve('server.js'),
+        to: '../'
       }
     ])
   ]
