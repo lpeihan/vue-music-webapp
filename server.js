@@ -3,7 +3,6 @@ const path = require('path');
 const url = require('url');
 const fs = require('fs');
 
-
 function staticRoot(staticPath, req, res) {
   let pathname = url.parse(req.url).pathname;
 
@@ -25,7 +24,7 @@ function staticRoot(staticPath, req, res) {
 }
 
 const server = http.createServer(function(req, res) {
-  staticRoot(path.resolve(__dirname, 'frontend'), req, res);
+  staticRoot(path.resolve(__dirname, 'static'), req, res);
 });
 
 server.listen(2100);
