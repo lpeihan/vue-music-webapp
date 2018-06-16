@@ -28,5 +28,5 @@ const server = http.createServer(function(req, res) {
   staticRoot(path.resolve(__dirname, 'frontend'), req, res);
 });
 
-server.listen(2100);
-console.log('visit http://localhost:2100');
+server.listen(2002);
+console.log('visit http://localhost:2002');
