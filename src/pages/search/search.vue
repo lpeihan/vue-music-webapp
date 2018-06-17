@@ -55,17 +55,17 @@
           <li class="title" v-show="singers.length && songs.length">你可能感兴趣</li>
           <li v-if="singers.length && songs.length" class="singer" @click="selectSinger(singers[0])">
             <img :src="singers[0].img1v1Url" alt="" width="48" class="img">
-            <span class="name">歌手：{{singers[0].name}}</span>
+            <span class="name">歌手：<span v-html="highlight(singers[0].name)"></span></span>
           </li>
 
           <li v-if="musicList.length && songs.length" class="musicList" @click="selectMusicList(musicList[0])">
             <img :src="musicList[0].coverImgUrl" alt="" width="48" class="img">
-            <span class="name">歌单：{{musicList[0].name}}</span>
+            <span class="name">歌单：<span v-html="highlight(musicList[0].name)"></span></span>
           </li>
 
           <li v-for="song in songs" :key="song.id" class="song" @click="selectSong(song)">
-            <p class="name">{{song.name}}</p>
-            <p class="singer-name">{{song.singer}} <span v-if="song.alias">- {{song.alias}}</span></p>
+            <p class="name" v-html="highlight(song.name)"></p>
+            <p class="singer-name"><span v-html="song.singer"></span> <span v-if="song.alias">- {{song.alias}}</span></p>
           </li>
 
           <li class="loading-container" v-show="searching && songs.length">
@@ -250,6 +250,10 @@ export default {
       el.addEventListener('myCustomTapEvent', () => {
         this.$refs.searchBox.blur();
       }, false);
+    },
+    highlight(text, key = this.query) {
+      const reg = new RegExp(key, 'g');
+      return text.replace(reg, `<span class="highlight-text">${key}</span>`);
     }
   },
   mounted() {
@@ -368,8 +372,7 @@ export default {
       ul
         padding-bottom: 60px
       .title
-        margin-top: 10px
-        line-height: 24px
+        line-height: 30px
         color: $color-text-l
         font-size: $font-size-medium
       .singer, .musicList

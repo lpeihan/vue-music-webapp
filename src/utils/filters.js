@@ -11,3 +11,8 @@ Vue.filter('date', (value) => {
   return value ? `${date.getFullYear()}年${fillZero(date.getMonth() + 1)}月\
 ${fillZero(date.getDate())}日` : '';
 });
+
+Vue.filter('highlight', (value, key) => {
+  const reg = new RegExp(key, 'g');
+  return value.replace(reg, `<span class="highlight-text">${key}</span>`);
+});

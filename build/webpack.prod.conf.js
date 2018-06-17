@@ -16,7 +16,7 @@ const {
 
 module.exports = merge(baseWebpackConf, {
   output: {
-    publicPath: '',
+    publicPath: '/',
     filename: assetsPath('js/[name].[chunkhash].js')
   },
   devtool: '#source-map',
