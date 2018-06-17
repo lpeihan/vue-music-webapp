@@ -65,7 +65,9 @@
 
           <li v-for="song in songs" :key="song.id" class="song" @click="selectSong(song)">
             <p class="name" v-html="highlight(song.name)"></p>
-            <p class="singer-name"><span v-html="song.singer"></span> <span v-if="song.alias">- {{song.alias}}</span></p>
+            <p class="singer-name"><span v-html="highlight(song.singer)"></span>
+              <span v-if="song.alias">- <span v-html="highlight(song.alias)"></span>
+            </p>
           </li>
 
           <li class="loading-container" v-show="searching && songs.length">
