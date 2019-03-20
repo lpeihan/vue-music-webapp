@@ -63,6 +63,8 @@ export default {
     handleTouchstart(e) {
       this.startX = e.touches[0].pageX;
       this.startY = e.touches[0].pageY;
+      this.endX = e.touches[0].pageX;
+      this.endY = e.touches[0].pageY;
     },
     handleTouchmove(e) {
       if (this.duration) {

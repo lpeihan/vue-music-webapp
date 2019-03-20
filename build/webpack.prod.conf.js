@@ -5,7 +5,7 @@ const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+// const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const packageConfig = require('../package.json');
 const baseWebpackConf = require('./webpack.base.conf');
@@ -67,12 +67,12 @@ module.exports = merge(baseWebpackConf, {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
       minChunks: Infinity
-    }),
-    new CopyWebpackPlugin([
-      {
-        from: resolve('static'),
-        to: 'static'
-      }
-    ])
+    })
+    // new CopyWebpackPlugin([
+    //   {
+    //     from: resolve('static'),
+    //     to: 'static'
+    //   }
+    // ])
   ]
 });
