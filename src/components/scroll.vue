@@ -43,7 +43,8 @@ export default {
         tap: 'myCustomTapEvent',
         bounce: {
           top: this.bounceTop
-        }
+        },
+        mouseWheel: true
       });
 
       if (this.listenScroll) {
