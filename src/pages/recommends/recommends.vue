@@ -8,7 +8,7 @@
               v-for="(barnner, index) in barnners"
               :key="index"
             >
-              <img :src="barnner.picUrl" width="100%">
+              <img :src="barnner.imageUrl" width="100%">
             </div>
           </swiper>
         </div>

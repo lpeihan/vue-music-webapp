@@ -301,7 +301,7 @@ export default {
             border: 1px solid $color-border
             margin: 0 12px 12px 0
             border-radius: 5px
-            font-size: $font-size-medium
+            font-size: $font-size-medium - 1
       .history-wrapper
         margin-top: 10px
         .title
