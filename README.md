@@ -1,6 +1,9 @@
 # vue-music-webapp
 高仿网易云音乐
 
+## 在线体验
+http://music.ipeihan.top
+
 ## 使用
 ```shell
 # 开发环境
