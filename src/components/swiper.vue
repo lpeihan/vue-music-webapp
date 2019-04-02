@@ -154,7 +154,7 @@ export default {
 
       .dot
         display: inline-block
-        size: 8px
+        size: 6px
         margin: 0 4px
         background: $white
         border-radius: 50%

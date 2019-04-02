@@ -52,8 +52,8 @@ export default {
       .circle
         position: relative
         display: inline-block
-        width: 48%
-        padding-bottom: 48%
+        width: 45%
+        padding-bottom: 45%
         border: 1px solid $color-theme
         border-radius: 50%
         height: 0
@@ -63,5 +63,5 @@ export default {
           absolute: top 50% left 50%
           transform: translate(-50%, -50%)
       .text
-        margin-top: 6px
+        margin-top: 8px
 </style>

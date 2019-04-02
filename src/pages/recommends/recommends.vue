@@ -121,11 +121,11 @@ export default {
 
     .barnners-wrapper
       position: relative
-      padding: 0 8px
+      padding: 5px 8px 2px
 
       &::after
         content: ''
-        absolute: top 0 left 0 right 0 bottom 20%
+        absolute: top 0 left 0 right 0 bottom 25%
         background: $color-theme
         z-index: -1
 
@@ -138,12 +138,12 @@ export default {
       .title
         font-weight: 700
         line-height: 50px
-        padding: 0 8px
+        padding: 0 10px
 
       .recommend-item
-        width: calc(33.33% - 11px)
+        width: calc(33.33% - 13px)
         float: left
-        margin-left: 8px
+        margin-left: 10px
         overflow: hidden
 
         .inner
@@ -158,7 +158,7 @@ export default {
 
         .name
           overflow: hidden
-          margin: 6px 0 12px
+          margin: 6px 0 18px
           height: 36px
           line-height: 18px
           white-space: normal
