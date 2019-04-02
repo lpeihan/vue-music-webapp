@@ -77,7 +77,7 @@
     </transition>
 
     <div class="player-mini" @click="open()">
-      <div class="img" :style="{ 'background-image': `url(${currentSong.image})` }"></div>
+      <div class="img" :class="cdCls" :style="{ 'background-image': `url(${currentSong.image})` }"></div>
 
       <div class="text">
         <h2 class="name">{{currentSong.name}}</h2>
@@ -86,7 +86,9 @@
 
       <div class="right-btns">
         <div class="mini-play" @click.stop="togglePlaying">
-          <icon :name="playing ? 'minipause': 'miniplay'"></icon>
+          <progress-circle :percent="percent">
+            <icon :name="playing ? 'minipause': 'miniplay'"></icon>
+          </progress-circle>
         </div>
         <div class="playlist" @click.stop="openPlaylist">
           <icon name="playlist"></icon>
@@ -115,13 +117,15 @@ import Scroll from '../../components/scroll';
 import { mode } from '../../services/config';
 import Playlist from '../playlist/playlist';
 import Toast from '../../components/toast';
+import ProgressCircle from '../../components/progress-circle';
 
 export default {
   components: {
     ProgressBar,
     Scroll,
     Playlist,
-    Toast
+    Toast,
+    ProgressCircle
   },
   data() {
     return {
@@ -422,6 +426,12 @@ export default {
   @import "../../styles/mixins"
 
   .player
+    @keyframes rotate
+      0%
+        transform: rotate(0)
+      100%
+        transform: rotate(360deg)
+
     &-normal
       fixed: top 0 left 0 right 0 bottom 0
       z-index: 1000
@@ -493,12 +503,6 @@ export default {
               animation: rotate 20s linear infinite
             &.pause
               animation-play-state: paused
-
-          @keyframes rotate
-            0%
-              transform: rotate(0)
-            100%
-              transform: rotate(360deg)
 
         .lyric-wrapper
           height: 100%
@@ -576,6 +580,11 @@ export default {
         background-size: 100% 100%
         border-radius: 50%
         box-shadow: 0 0 2px $color-text-l
+
+        &.play
+          animation: rotate 20s linear infinite
+        &.pause
+          animation-play-state: paused
       .text
         width: calc(100% - 80px - 40px)
         padding-left: 10px
@@ -589,7 +598,7 @@ export default {
           no-wrap()
 
       .right-btns
-        width: 80px
+        width: 76px
         align-items: center
         display: flex
         justify-content: space-between
@@ -598,6 +607,7 @@ export default {
 
         .mini-play
           .icon
-            font-size: 36px
+            font-size: 20px
+            color: $color-theme
 
 </style>
