@@ -2,7 +2,7 @@ import { host } from './config';
 import axios from 'axios';
 
 export function getSong(id) {
-  return axios.get(host + `/music/url?id=${id}`);
+  return axios.get(host + `/song/url?id=${id}`);
 }
 
 export function getLyric (id) {
