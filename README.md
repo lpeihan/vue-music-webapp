@@ -1,10 +1,11 @@
 # vue-music-webapp
 高仿网易云音乐
+> 技术栈: vue、vuex、better-sroll、vue-lazyload、webpack3
 
-## 在线体验
+## Live demo
 http://music.ipeihan.top
 
-## 使用
+## Usage
 ```shell
 # 开发环境
 npm run dev
@@ -13,7 +14,7 @@ npm run dev
 npm run build
 ```
 
-## 已完成功能
+## Finished
 * 推荐页面
 
 * 音乐排行
