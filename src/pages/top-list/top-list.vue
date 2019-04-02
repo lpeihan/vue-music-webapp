@@ -7,9 +7,13 @@
         </div>
         <div class="right">
           <ul class="song-list">
-            <li class="song-item" v-for="(song, index) in top.tracks" :key="index">
+            <li class="song-item">{{top.name}}</li>
+            <li class="song-item">{{top.description}}</li>
+            <li class="song-item">{{top.updateFrequency}}</li>
+
+            <!-- <li class="song-item" v-for="(song, index) in top.tracks" :key="index">
               {{`${index + 1}. ${song.first} - ${song.second}`}}
-            </li>
+            </li> -->
           </ul>
         </div>
       </li>
