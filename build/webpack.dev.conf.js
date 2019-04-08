@@ -28,6 +28,7 @@ module.exports = merge(baseWebpackConf, {
     compress: true,
     quiet: true,
     clientLogLevel: 'warning',
+    contentBase: resolve('static'),
     overlay: {
       errors: true,
       warnings: false
@@ -57,7 +58,7 @@ module.exports = merge(baseWebpackConf, {
     new FriendlyErrorsPlugin({
       compilationSuccessInfo: {
         messages: [
-          `Your application is running here ${host}:${port}`
+          `Your application is running here http://${host}:${port}`
         ]
       },
       onErrors: function(severity, errors) {

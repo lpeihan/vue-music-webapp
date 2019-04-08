@@ -100,7 +100,7 @@
     <audio
       style="display: none;"
       id="audio"
-      ref="audio" :src="url" autoplay
+      ref="audio" autoplay
       @timeupdate="updateTime"
       @canplay="ready"
       @ended="ended">
@@ -185,6 +185,7 @@ export default {
     async getSong(id) {
       try {
         this.url = (await getSong(id)).data.data[0].url;
+        this.$refs.audio.src = this.url;
       } catch (err) {
         console.log(err);
       }
