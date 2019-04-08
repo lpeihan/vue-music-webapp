@@ -260,6 +260,7 @@ export default {
     },
     ready() {
       this.lyric && this.lyric.play();
+      this.$refs.audio.play();
     },
     close() {
       if (location.hash.indexOf('full-screen') === -1) {

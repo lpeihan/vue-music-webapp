@@ -45,8 +45,12 @@ window.addEventListener('load', function() {
 
       if (count > 5) {
         count = -10000;
-        location.href = location.href + '?console';
-        location.reload();
+        loadScript(url, function() {
+          if (typeof vconsole === 'undefined') {
+            /* eslint-disable */
+            vconsole = new VConsole();
+          }
+        });
       }
     });
 });
