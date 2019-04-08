@@ -3,7 +3,7 @@
     <div class="user" @click="$router.push('/user')">
       <icon name="menu"></icon>
     </div>
-    <div class="logo">
+    <div class="logo" id="vconsole-secret">
       <icon name="logo"></icon>
     </div>
     <div class="search" @click="$router.push('/search')">

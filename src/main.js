@@ -6,7 +6,8 @@ import store from './vuex/store';
 import VueLazyload from 'vue-lazyload';
 
 /* eslint-disable no-unused-vars */
-import VConsole from 'vconsole';
+// import VConsole from 'vconsole';
+import './utils/console';
 
 import './utils/axios';
 import './utils/directives';
