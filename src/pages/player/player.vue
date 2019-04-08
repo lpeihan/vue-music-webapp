@@ -85,7 +85,7 @@
       </div>
 
       <div class="right-btns">
-        <div class="mini-play" @click.stop="togglePlaying">
+        <div class="mini-play" @click="togglePlaying">
           <progress-circle :percent="percent">
             <icon :name="playing ? 'minipause': 'miniplay'"></icon>
           </progress-circle>
