@@ -98,9 +98,10 @@
     <playlist ref="playlist" :mode-name="modeName" @changeMode="changeMode"></playlist>
     <toast ref="toast"></toast>
     <audio
-      style="display: none;"
+      @error="error"
       id="audio"
       ref="audio" autoplay
+      :src="url"
       @timeupdate="updateTime"
       @canplay="ready"
       @ended="ended">
@@ -185,7 +186,6 @@ export default {
     async getSong(id) {
       try {
         this.url = (await getSong(id)).data.data[0].url;
-        this.$refs.audio.src = this.url;
       } catch (err) {
         console.log(err);
       }
@@ -260,6 +260,9 @@ export default {
       } else {
         this.next();
       }
+    },
+    error(err) {
+      console.log(err);
     },
     ready() {
       this.lyric && this.lyric.play();
