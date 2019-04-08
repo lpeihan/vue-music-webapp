@@ -37,8 +37,21 @@ export default {
       tabIndex: 0
     };
   },
+  methods: {
+    firstplay() {
+      const audio = document.getElementById('audio');
+
+      audio.play();
+
+      if (audio.src) {
+        document.removeEventListener('touchend', this.firstplay);
+      }
+    }
+  },
   mounted() {
     this.height = window.innerHeight - 50;
+
+    document.addEventListener('touchend', this.firstplay);
   }
 };
 </script>
