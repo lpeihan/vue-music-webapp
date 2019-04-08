@@ -41,11 +41,13 @@ export default {
     firstplay() {
       const audio = document.getElementById('audio');
 
-      audio.play();
+      setTimeout(() => {
+        audio.play();
 
-      if (audio.src) {
-        document.removeEventListener('touchend', this.firstplay);
-      }
+        if (audio.src) {
+          document.removeEventListener('touchend', this.firstplay);
+        }
+      }, 500);
     }
   },
   mounted() {
