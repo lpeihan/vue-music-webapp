@@ -98,6 +98,7 @@
     <playlist ref="playlist" :mode-name="modeName" @changeMode="changeMode"></playlist>
     <toast ref="toast"></toast>
     <audio
+      style="display: none;"
       id="audio"
       ref="audio" :src="url" autoplay
       @timeupdate="updateTime"
