@@ -400,6 +400,7 @@ export default {
       if (!this.url) { return; }
 
       this.$nextTick(() => {
+        console.log('come in', val);
         val ? this.$refs.audio.play() : this.$refs.audio.pause();
       });
     },
