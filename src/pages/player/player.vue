@@ -98,7 +98,8 @@
     <playlist ref="playlist" :mode-name="modeName" @changeMode="changeMode"></playlist>
     <toast ref="toast"></toast>
     <audio
-      ref="audio" :src="url" autoplay="autoplay"
+      id="audio"
+      ref="audio" :src="url" autoplay
       @timeupdate="updateTime"
       @canplay="ready"
       @ended="ended">
@@ -400,7 +401,6 @@ export default {
       if (!this.url) { return; }
 
       this.$nextTick(() => {
-        console.log('come in', val);
         val ? this.$refs.audio.play() : this.$refs.audio.pause();
       });
     },
