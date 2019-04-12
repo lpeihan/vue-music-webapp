@@ -42,10 +42,12 @@ export default {
       const audio = document.getElementById('audio');
 
       setTimeout(() => {
-        audio.play();
+        if (audio) {
+          audio.play();
 
-        if (audio.src) {
-          document.removeEventListener('touchend', this.firstplay);
+          if (audio.src) {
+            document.removeEventListener('touchend', this.firstplay);
+          }
         }
       }, 500);
     }

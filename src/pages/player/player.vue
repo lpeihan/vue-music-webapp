@@ -1,7 +1,7 @@
 <template>
   <div class="player" v-if="playlist.length">
     <transition name="normal" @enter="enter" @leave="leave">
-      <div class="player-normal" v-show="fullScreen" @touchstart.once="firstPlay">
+      <div class="player-normal" v-show="fullScreen">
         <div class="overlay" :style="{ 'background-image': `url(${currentSong.image})` }"></div>
         <div class="top">
           <div class="back" @click="back">
@@ -265,8 +265,8 @@ export default {
       console.log(err);
     },
     ready() {
-      this.lyric && this.lyric.play();
-      this.$refs.audio.play();
+      // this.lyric && this.lyric.play();
+      // this.$refs.audio.play();
     },
     close() {
       if (location.hash.indexOf('full-screen') === -1) {
@@ -365,9 +365,6 @@ export default {
         y: innerHeight - 120 - width / 2 - 30,
         scale: 40 / width
       };
-    },
-    firstPlay() {
-      this.$refs.audio.play();
     }
   },
   watch: {

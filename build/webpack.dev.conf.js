@@ -14,7 +14,7 @@ const {
 } = require('./utils');
 
 const host = '0.0.0.0';
-const port = 8301;
+const port = 8302;
 const proxy = {};
 
 module.exports = merge(baseWebpackConf, {
