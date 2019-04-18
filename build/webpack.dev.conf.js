@@ -13,7 +13,7 @@ const {
   resolve
 } = require('./utils');
 
-const host = '0.0.0.0';
+const host = 'localhost';
 const port = 8302;
 const proxy = {};
 
