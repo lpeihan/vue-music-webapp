@@ -5,6 +5,8 @@
 ## Live demo
 http://music.ipeihan.top
 
+![二维码](http://ppzqzk863.bkt.clouddn.com/20190426111910.png)
+
 ## Usage
 ```shell
 # 开发环境
