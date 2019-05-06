@@ -7,10 +7,12 @@
       </div>
       <tab class="users-tab" :tabs="tabs" :tab-index.sync="tabIndex">
         <scroll class="favorite" :data="favoriteList" ref="favorite">
-          <song-list :songs="favoriteList" @select="selectFavorite"></song-list>
+          <song-list :songs="favoriteList" @select="selectFavorite" v-if="favoriteList.length"></song-list>
+          <empty v-else></empty>
         </scroll>
         <scroll class="play-history" :data="playHistory" ref="history">
-          <song-list :songs="playHistory" @select="selectPlayHistory"></song-list>
+          <song-list :songs="playHistory" @select="selectPlayHistory" v-if="selectPlayHistory.length"></song-list>
+          <empty v-else></empty>
         </scroll>
       </tab>
     </div>
@@ -23,6 +25,7 @@ import { mapGetters, mapActions } from 'vuex';
 import SongList from '../music-list/song-list';
 import Scroll from '../../components/scroll';
 import { playlistMixin } from '../../utils/mixins';
+import Empty from '../../components/empty';
 
 export default {
   mixins: [
@@ -31,7 +34,8 @@ export default {
   components: {
     Tab,
     SongList,
-    Scroll
+    Scroll,
+    Empty
   },
   data() {
     return {
