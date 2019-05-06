@@ -11,7 +11,7 @@
           <empty v-else></empty>
         </scroll>
         <scroll class="play-history" :data="playHistory" ref="history">
-          <song-list :songs="playHistory" @select="selectPlayHistory" v-if="selectPlayHistory.length"></song-list>
+          <song-list :songs="playHistory" @select="selectPlayHistory" v-if="playHistory.length"></song-list>
           <empty v-else></empty>
         </scroll>
       </tab>
