@@ -1,9 +1,16 @@
-# vue-music-webapp
-高仿网易云音乐
-> 技术栈: vue、vuex、better-sroll、vue-lazyload、webpack3
+# vue-music-webapp 网易云音乐
+
+技术栈: vue、vuex、better-sroll、vue-lazyload、webpack3
+
+## 网易云音乐接口地址
+[网易云接口仓库地址](https://github.com/Binaryify/NeteaseCloudMusicApi)
 
 ## Live demo
 http://music.ipeihan.top
+
+手机扫码，体验更加
+
+![二维码](http://ppzqzk863.bkt.clouddn.com/20190426111910.png)
 
 ## Usage
 ```shell
