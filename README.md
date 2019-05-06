@@ -12,6 +12,8 @@ http://music.ipeihan.top
 
 ![二维码](http://ppzqzk863.bkt.clouddn.com/20190426111910.png)
 
+**现在已经支持pwa，可以使用 chrome、safari 添加到主屏幕，体验跟原生的app很接近**
+
 ## Usage
 ```shell
 # 开发环境
@@ -37,5 +39,5 @@ npm run build
 
 ## TodoList
 
-* 加入 `pwa`，支持添加图标到桌面
-* 兼容`safari`以及部分不能播放音频的安卓手机
+* ~~加入 `pwa`，支持添加图标到桌面
+* ~~兼容`safari`以及部分不能播放音频的安卓手机
