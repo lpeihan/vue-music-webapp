@@ -10,9 +10,11 @@ http://music.ipeihan.top
 
 手机扫码，体验更加
 
-![二维码](http://ppzqzk863.bkt.clouddn.com/20190426111910.png)
+![二维码](http://images.ipeihan.top/20191021164510.png)
 
-**现在已经支持pwa，可以使用 chrome、safari 添加到主屏幕，体验跟原生的app很接近**
+
+## Typescript 版
+Typescript 版请移步https://github.com/lpeihan/netease
 
 ## Usage
 ```shell
