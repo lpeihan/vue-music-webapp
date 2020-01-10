@@ -60,7 +60,7 @@
     "better-scroll": "^1.15.1",
     "create-keyframe-animation": "^0.1.0",
     "lyric-parser": "^1.0.1",
-    "pinyin": "^2.8.3",
+    "pinyin": "2.8.3",
     "vue": "^2.5.16",
     "vue-lazyload": "^1.2.3",
     "vue-router": "^3.0.1",
